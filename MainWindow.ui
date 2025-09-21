@@ -1,0 +1,428 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1200</width>
+    <height>602</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>YKS EpiSelecta</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="gridLayout_4">
+    <item row="1" column="2">
+     <widget class="QGroupBox" name="groupBox_2">
+      <property name="minimumSize">
+       <size>
+        <width>100</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="title">
+       <string>Burs Durumu</string>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_3">
+       <item row="0" column="1">
+        <widget class="QCheckBox" name="checkBoxUcretsiz">
+         <property name="text">
+          <string>Ücretsiz</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QCheckBox" name="checkBoxIndirimli">
+         <property name="text">
+          <string>İndirimli</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QCheckBox" name="checkBoxUcretli">
+         <property name="text">
+          <string>Ücretli</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QGroupBox" name="groupBox">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>225</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="title">
+       <string>Kontenjan Türü</string>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_2">
+       <item row="3" column="1">
+        <widget class="QCheckBox" name="checkBoxDepremzede">
+         <property name="text">
+          <string>Depremzede</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QCheckBox" name="checkBoxOkulBirincisi">
+         <property name="text">
+          <string>Okul Birincisi</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QCheckBox" name="checkBoxKadin34">
+         <property name="text">
+          <string>34+ Kadın</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QCheckBox" name="checkBoxGenel">
+         <property name="text">
+          <string>Genel</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0" colspan="2">
+        <widget class="QCheckBox" name="checkBoxSehitGaziYakini">
+         <property name="text">
+          <string>Şehit / Gazi Yakını</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item row="0" column="0" rowspan="2">
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_3">
+        <property name="maximumSize">
+         <size>
+          <width>120</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Öğrenim Derecesi</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_2">
+        <property name="maximumSize">
+         <size>
+          <width>120</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Bölüm</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QComboBox" name="comboBoxUniversityType">
+        <item>
+         <property name="text">
+          <string>Devlet ve Vakıf</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Devlet</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Vakıf</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label">
+        <property name="maximumSize">
+         <size>
+          <width>120</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Üniversite</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_5">
+        <property name="maximumSize">
+         <size>
+          <width>120</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Üniversite Türü</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="comboBoxUniversity">
+        <property name="minimumSize">
+         <size>
+          <width>400</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="editable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QComboBox" name="comboBox_3">
+        <item>
+         <property name="text">
+          <string>Lisans ve Ön Lisans</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Lisans</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Ön Lisans</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QComboBox" name="comboBoxDepartment">
+        <property name="editable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item row="0" column="1" colspan="2">
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QLabel" name="label_4">
+        <property name="maximumSize">
+         <size>
+          <width>30</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Ülke</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="comboBox_4">
+        <item>
+         <property name="text">
+          <string>Tüm Ülkeler</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Türkiye</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Kıbrıs</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Diğer</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item row="1" column="3">
+     <spacer name="horizontalSpacer">
+      <property name="orientation">
+       <enum>Qt::Orientation::Horizontal</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>40</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="2" column="0" colspan="4">
+     <widget class="QTableWidget" name="tableWidgetPrograms">
+      <property name="sortingEnabled">
+       <bool>true</bool>
+      </property>
+      <column>
+       <property name="text">
+        <string>Program Kodu</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Üniversite</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Kampüs</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Program</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Puan Türü</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Kontenjan</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Yerleşen</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Başarı Sırası</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>En Küçük Puanı</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Okul Birincisi Kontenjan</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Okul Birincisi Yerleşen</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Okul Birincisi Başarı Sırası</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Okul Birincisi En Küçük Puan</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Şehit / Gazi Yakını Kontenjan</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Şehit / Gazi Yakını Yerleşen</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Şehit / Gazi Yakını Başarı Sırası</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Şehit / Gazi Yakını En Küçük Puanı</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Depremzede Kontenjan</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Depremzede Yerleşen</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Depremzede Başarı Sırası</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Depremzede En Küçük Puan</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>34+ Kadın Kontenjan</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>34+ Kadın Yerleşen</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>34+ Kadın Başarı Sırası</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>34+ Kadın En Küçük Puanı</string>
+       </property>
+      </column>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1200</width>
+     <height>30</height>
+    </rect>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
