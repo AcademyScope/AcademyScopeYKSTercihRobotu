@@ -2,6 +2,7 @@
 
 #include <QMainWindow>
 #include <QLocale>
+#include <QSqlDatabase>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -32,17 +33,28 @@ private slots:
 
     void on_comboBoxDepartment_editTextChanged(const QString &arg1);
 
+    void on_comboBoxUlke_currentIndexChanged(int index);
+
+    void on_comboBoxLicenseType_currentIndexChanged(int index);
+
+    void on_comboBoxUniversityType_currentIndexChanged(int index);
+
 private:
     Ui::MainWindow *ui;
     void initDB();
     void setProgramTableColumnWidths();
     void populateUniversitiesComboBox();
     void populateDepartmentsComboBox();
-    void populateProgramTable();
+    void populateProgramTable(int sortCol = -1, Qt::SortOrder ord = Qt::AscendingOrder);
     void hideUnnecessaryColumnsOnTheProgramTable();
     void hideUnusedColumnsOnTheProgramTable();
+    void initializeYKSTableColumnNames();
 
     QLocale turkishLocale;
+    int lastSortCol = -1;
+    Qt::SortOrder lastSortOrder = Qt::AscendingOrder;
+    QStringList yksTableColumnNames;
+    QSqlDatabase db;
 };
 
 enum class ProgramTableColumns : int {

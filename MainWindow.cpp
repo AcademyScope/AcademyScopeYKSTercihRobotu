@@ -56,6 +56,23 @@ MainWindow::MainWindow(QWidget *parent)
 
     hideUnusedColumnsOnTheProgramTable();
     hideUnnecessaryColumnsOnTheProgramTable();
+    populateProgramTable(); // ilk yükleme (sırasız)
+
+    // Header tıklanınca DB’den ORDER BY ile yeniden çek
+    auto *hdr = ui->tableWidgetPrograms->horizontalHeader();
+    hdr->setSortIndicatorShown(true);
+    connect(hdr, &QHeaderView::sectionClicked, this, [=](int col){
+        // Aynı kolona tekrar tıklayınca yönü değiştir
+        if (lastSortCol == col)
+            lastSortOrder = (lastSortOrder == Qt::AscendingOrder) ? Qt::DescendingOrder
+                                                                  : Qt::AscendingOrder;
+        else {
+            lastSortCol = col;
+            lastSortOrder = Qt::AscendingOrder;
+        }
+        hdr->setSortIndicator(lastSortCol, lastSortOrder);
+        populateProgramTable(lastSortCol, lastSortOrder);
+    });
 }
 
 MainWindow::~MainWindow()
@@ -108,7 +125,7 @@ void MainWindow::populateUniversitiesComboBox()
 */
 
 void MainWindow::initDB() {
-    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+    db = QSqlDatabase::addDatabase("QSQLITE");
     db.setDatabaseName("/Volumes/Projects/YKSEpiSelecta/YKS.SQLite");
 
     if (!db.open()) {
@@ -192,13 +209,98 @@ void MainWindow::populateDepartmentsComboBox() {
 }
 
 
-void MainWindow::populateProgramTable(){
+void MainWindow::populateProgramTable(int sortCol, Qt::SortOrder ord){
+    if (!db.isOpen())
+        return;
+
     QString universityName = ui->comboBoxUniversity->currentText();
+    QString department = ui->comboBoxDepartment->currentText();
     universityName = turkishLocale.toUpper(universityName);
     QSqlQuery query;
+
+    QStringList whereQueries;
+    QStringList kontenjanQueries;
     QList<QPair<int, QString>> universities;
 
-    if (query.exec("SELECT * FROM YKS WHERE UniversiteAdi LIKE \"%" + universityName + "%\"")) {
+
+    QString sqlQuery = "SELECT * FROM YKS";
+    if(universityName.trimmed() != "") {
+        whereQueries.append("UniversiteAdi LIKE \"%" + universityName + "%\"");
+    }
+
+    if(department.trimmed() != "") {
+        whereQueries.append("ProgramAdi LIKE \"%" + department + "%\"");
+    }
+
+    int ulkeIndex = ui->comboBoxUlke->currentIndex();
+    if(ulkeIndex == 1) { //Turkiye
+        whereQueries.append("UlkeKodu = 90");
+    }
+    else if(ulkeIndex == 2) { //Kibris
+        whereQueries.append("UlkeKodu = 357");
+    }
+    else if(ulkeIndex == 3) { //Yurtdisi
+        whereQueries.append("UlkeKodu <> 90");
+        whereQueries.append("UlkeKodu <> 357");
+    }
+
+    if(ui->comboBoxLicenseType->currentIndex() == 1) {
+        whereQueries.append("Lisans = 1");
+    }
+    else if(ui->comboBoxLicenseType->currentIndex() == 2) {
+        whereQueries.append("Lisans = 0");
+    }
+
+    if(ui->comboBoxUniversityType->currentIndex() == 1) { // Devlet
+        whereQueries.append("DevletUniversitesi = 1");
+    }
+    else if(ui->comboBoxUniversityType->currentIndex() == 2) { //Vakıf
+        whereQueries.append("DevletUniversitesi = 0");
+    }
+
+    if (ui->checkBoxGenel->isChecked()) {
+        kontenjanQueries.append("Genel_Kontenjan IS NOT NULL");
+    }
+
+    if (ui->checkBoxOkulBirincisi->isChecked()) {
+        kontenjanQueries.append("OB_Kontenjan IS NOT NULL");
+    }
+
+    if (ui->checkBoxSehitGaziYakini->isChecked()) {
+        kontenjanQueries.append("SehitGazi_Kontenjan IS NOT NULL");
+    }
+
+    if (ui->checkBoxDepremzede->isChecked()) {
+        kontenjanQueries.append("Dep_Kontenjan IS NOT NULL");
+    }
+
+    if (ui->checkBoxKadin34->isChecked()) {
+        kontenjanQueries.append("Kadin34_Kontenjan IS NOT NULL");
+    }
+
+    if(!whereQueries.isEmpty()) {
+        sqlQuery += " WHERE ";
+        sqlQuery += whereQueries[0];
+        for(int i = 1; i < whereQueries.size(); i++) {
+            sqlQuery += " AND " + whereQueries[i];
+        }
+    }
+
+    if(!kontenjanQueries.isEmpty()) {
+        if(whereQueries.isEmpty()) {
+            sqlQuery += " WHERE (";
+        }
+        else {
+            sqlQuery += " AND (";
+        }
+        sqlQuery += kontenjanQueries[0];
+        for(int i = 1; i < kontenjanQueries.size(); i++) {
+            sqlQuery += " OR " + kontenjanQueries[i];
+        }
+        sqlQuery += ")";
+    }
+
+    if (query.exec(sqlQuery)) {
         ui->tableWidgetPrograms->setRowCount(0);
         hideUnnecessaryColumnsOnTheProgramTable();
 
@@ -347,6 +449,40 @@ void MainWindow::hideUnusedColumnsOnTheProgramTable() {
     ui->tableWidgetPrograms->hideColumn((int) ProgramTableColumns::Kadin34PlusBasariSirasi);
 }
 
+void MainWindow::initializeYKSTableColumnNames()
+{
+    yksTableColumnNames = {
+        "ProgramKodu",
+        "UniversiteTuru",
+        "UniversiteAdi",
+        "FakulteYuksekokulAdi",
+        "ProgramAdi",
+        "PuanTuru",
+        "Genel_Kontenjan",
+        "Genel_Yerlesen",
+        "Genel_EnKucukPuan",
+        "Genel_EnBuyukPuan",
+        "OB_Kontenjan",
+        "OB_Yerlesen",
+        "OB_EnKucukPuan",
+        "OB_EnBuyukPuan",
+        "Dep_Kontenjan",
+        "Dep_Yerlesen",
+        "Dep_EnKucukPuan",
+        "Dep_EnBuyukPuan",
+        "Kadin34_Kontenjan",
+        "Kadin34_Yerlesen",
+        "Kadin34_EnKucukPuan",
+        "Kadin34_EnBuyukPuan",
+        "SehitGazi_Kontenjan",
+        "SehitGazi_Yerlesen",
+        "SehitGazi_EnKucukPuan",
+        "SehitGazi_EnBuyukPuan",
+        "Lisans",
+        "UlkeKodu"
+    };
+}
+
 void MainWindow::on_checkBoxGenel_toggled(bool checked)
 {
     populateProgramTable();
@@ -378,6 +514,24 @@ void MainWindow::on_checkBoxKadin34_toggled(bool checked)
 
 void MainWindow::on_comboBoxDepartment_editTextChanged(const QString &arg1)
 {
+    populateProgramTable();
+}
 
+
+void MainWindow::on_comboBoxUlke_currentIndexChanged(int index)
+{
+    populateProgramTable();
+}
+
+
+void MainWindow::on_comboBoxLicenseType_currentIndexChanged(int index)
+{
+    populateProgramTable();
+}
+
+
+void MainWindow::on_comboBoxUniversityType_currentIndexChanged(int index)
+{
+    populateProgramTable();
 }
 
