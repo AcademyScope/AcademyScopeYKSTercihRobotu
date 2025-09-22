@@ -10,6 +10,7 @@
 #include "TurkishFilterProxy.hpp"
 #include <QLineEdit>
 #include <QCollator>
+#include "AboutDialog.hpp"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -24,20 +25,18 @@ MainWindow::MainWindow(QWidget *parent)
 
     auto *proxyUniversity = new TurkishFilterProxy(this);
     proxyUniversity->setSourceModel(ui->comboBoxUniversity->model());
-    proxyUniversity->sort(0);  // Türkçe sıralama aktif
+    proxyUniversity->sort(0);
 
     auto *proxyDepartment = new TurkishFilterProxy(this);
     proxyDepartment->setSourceModel(ui->comboBoxDepartment->model());
-    proxyDepartment->sort(0);  // Türkçe sıralama aktif
+    proxyDepartment->sort(0);
 
     auto *completerUniversity = new QCompleter(proxyUniversity, this);
     completerUniversity->setCompletionMode(QCompleter::UnfilteredPopupCompletion);
-    // Case'i proxy yönettiği için:
     completerUniversity->setCaseSensitivity(Qt::CaseSensitive);
 
     auto *completerDepartment = new QCompleter(proxyDepartment, this);
     completerDepartment->setCompletionMode(QCompleter::UnfilteredPopupCompletion);
-    // Case'i proxy yönettiği için:
     completerDepartment->setCaseSensitivity(Qt::CaseSensitive);
 
     ui->comboBoxUniversity->setEditable(true);
@@ -46,7 +45,6 @@ MainWindow::MainWindow(QWidget *parent)
     ui->comboBoxDepartment->setEditable(true);
     ui->comboBoxDepartment->setCompleter(completerDepartment);
 
-    // Kullanıcı yazdıkça filtre güncelle
     connect(ui->comboBoxUniversity->lineEdit(), &QLineEdit::textEdited,
             proxyUniversity, [proxyUniversity](const QString &t){ proxyUniversity->setNeedle(t); });
 
@@ -56,13 +54,12 @@ MainWindow::MainWindow(QWidget *parent)
 
     hideUnusedColumnsOnTheProgramTable();
     hideUnnecessaryColumnsOnTheProgramTable();
-    populateProgramTable(); // ilk yükleme (sırasız)
+    populateProgramTable();
 
-    // Header tıklanınca DB’den ORDER BY ile yeniden çek
     auto *hdr = ui->tableWidgetPrograms->horizontalHeader();
     hdr->setSortIndicatorShown(true);
     connect(hdr, &QHeaderView::sectionClicked, this, [=](int col){
-        // Aynı kolona tekrar tıklayınca yönü değiştir
+        // When clicked to the title of a row again, change the order direction
         if (lastSortCol == col)
             lastSortOrder = (lastSortOrder == Qt::AscendingOrder) ? Qt::DescendingOrder
                                                                   : Qt::AscendingOrder;
@@ -83,50 +80,11 @@ MainWindow::~MainWindow()
 void MainWindow::on_comboBoxUniversity_editTextChanged(const QString &arg1)
 {
     populateProgramTable();
-    //ui->comboBoxUniversite->showPopup();
 }
-
-/*
-void MainWindow::populateUniversitiesComboBox()
-{
-
-    // Model üzerinden ilk item'a eriş
-    QStandardItemModel* model = qobject_cast<QStandardItemModel*>(ui->comboBoxUniversite->model());
-    QStandardItem* firstItem = model->item(0);
-
-    // Disable + gri göster
-    firstItem->setFlags(firstItem->flags() & ~Qt::ItemIsEnabled);
-    firstItem->setForeground(QBrush(Qt::gray));
-
-
-    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName("/Volumes/Projects/YKSEpiSelecta/YKS.SQLite");
-
-    if (!db.open()) {
-        qDebug() << "Veritabanı açılamadı:" << db.lastError().text();
-    } else {
-        qDebug() << "Veritabanına bağlanıldı.";
-    }
-
-
-    QSqlQuery query;
-
-    // Veri okuma
-    if (query.exec("SELECT UniversiteID, UniversiteAdi FROM Universiteler")) {
-        while (query.next()) {
-            int id = query.value(0).toInt();
-            QString universiteAdi = query.value(1).toString();
-            qDebug() << id << universiteAdi;
-            ui->comboBoxUniversite->addItem(universiteAdi);
-        }
-    }
-
-}
-*/
 
 void MainWindow::initDB() {
     db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName("/Volumes/Projects/YKSEpiSelecta/YKS.SQLite");
+    db.setDatabaseName(DB_PATH);
 
     if (!db.open()) {
         qDebug() << "Veritabanı açılamadı:" << db.lastError().text();
@@ -194,14 +152,12 @@ void MainWindow::populateDepartmentsComboBox() {
         }
     }
 
-    // Türkçe collator ile sırala
     QCollator collator(QLocale(QLocale::Turkish, QLocale::Turkey));
     std::sort(departments.begin(), departments.end(),
               [&](const QString &a, const QString &b) {
                   return collator.compare(a, b) < 0;
               });
 
-    // ComboBox’a ekle
     for (auto &department : departments) {
         ui->comboBoxDepartment->addItem(department);
     }
@@ -405,23 +361,10 @@ void MainWindow::populateProgramTable(int sortCol, Qt::SortOrder ord){
             ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::Kadin34PlusEnKucukPuan, new QTableWidgetItem(kadin34EnKucukPuan));
 
             row++;
-            //qDebug()<< "Program adı: " << programName;
         }
     }
 
     return;
-
-    // Türkçe collator ile sırala
-    QCollator collator(QLocale(QLocale::Turkish, QLocale::Turkey));
-    std::sort(universities.begin(), universities.end(),
-              [&](const QPair<int, QString> &a, const QPair<int, QString> &b) {
-                  return collator.compare(a.second, b.second) < 0;
-              });
-
-    // ComboBox’a ekle
-    for (auto &u : universities) {
-        ui->comboBoxUniversity->addItem(u.second, u.first);
-    }
 }
 
 void MainWindow::hideUnnecessaryColumnsOnTheProgramTable() {
@@ -613,5 +556,24 @@ void MainWindow::on_checkBoxMTOK_toggled(bool checked)
 void MainWindow::on_checkBoxEkKontenjan_toggled(bool checked)
 {
     populateProgramTable();
+}
+
+
+void MainWindow::on_pushButtonClearUniversityComboBox_clicked()
+{
+    ui->comboBoxUniversity->clearEditText();
+}
+
+
+void MainWindow::on_pushButtonClearDepartmentComboBox_clicked()
+{
+    ui->comboBoxDepartment->clearEditText();
+}
+
+
+void MainWindow::on_pushButtonAbout_clicked()
+{
+    AboutDialog aboutDialog;
+    aboutDialog.exec();
 }
 

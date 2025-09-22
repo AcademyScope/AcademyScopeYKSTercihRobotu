@@ -4,6 +4,8 @@
 #include <QLocale>
 #include <QSqlDatabase>
 
+#define DB_PATH "/Volumes/Projects/YKSEpiSelecta/YKS.SQLite"
+
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
@@ -50,6 +52,12 @@ private slots:
     void on_checkBoxMTOK_toggled(bool checked);
 
     void on_checkBoxEkKontenjan_toggled(bool checked);
+
+    void on_pushButtonClearUniversityComboBox_clicked();
+
+    void on_pushButtonClearDepartmentComboBox_clicked();
+
+    void on_pushButtonAbout_clicked();
 
 private:
     Ui::MainWindow *ui;
