@@ -45,6 +45,10 @@ private slots:
 
     void on_checkBoxUcretli_toggled(bool checked);
 
+    void on_checkBoxKKTCUyruklu_toggled(bool checked);
+
+    void on_checkBoxMTOK_toggled(bool checked);
+
 private:
     Ui::MainWindow *ui;
     void initDB();

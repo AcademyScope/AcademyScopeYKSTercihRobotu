@@ -293,6 +293,20 @@ void MainWindow::populateProgramTable(int sortCol, Qt::SortOrder ord){
         tuitionQueries.append("UcretDurumu = 100");
     }
 
+    if (ui->checkBoxKKTCUyruklu->isChecked()) {
+        kontenjanQueries.append("KKTCUyruklu = TRUE"); //In order to add OR Query, it is appended to kontenjanQueries
+    }
+    else {
+        whereQueries.append("KKTCUyruklu = FALSE"); //In order to add AND Query, it is appended to whereQueries
+    }
+
+    if (ui->checkBoxMTOK->isChecked()) {
+        kontenjanQueries.append("MTOK = TRUE"); //In order to add OR Query, it is appended to kontenjanQueries
+    }
+    else {
+        whereQueries.append("MTOK = FALSE"); //In order to add AND Query, it is appended to whereQueries
+    }
+
     if(!kontenjanQueries.isEmpty()) {
         kontenjanSubQuery += "(" + kontenjanQueries[0];
         for(int i = 1; i < kontenjanQueries.size(); i++) {
@@ -411,7 +425,7 @@ void MainWindow::populateProgramTable(int sortCol, Qt::SortOrder ord){
 }
 
 void MainWindow::hideUnnecessaryColumnsOnTheProgramTable() {
-    if(ui->checkBoxGenel->isChecked()) {
+    if(ui->checkBoxGenel->isChecked() || ui->checkBoxKKTCUyruklu->isChecked() || ui->checkBoxMTOK->isChecked()) {
         ui->tableWidgetPrograms->showColumn((int) ProgramTableColumns::GenelKontenjan);
         ui->tableWidgetPrograms->showColumn((int) ProgramTableColumns::GenelYerlesen);
         ui->tableWidgetPrograms->showColumn((int) ProgramTableColumns::GenelEnKucukPuan);
@@ -579,6 +593,18 @@ void MainWindow::on_checkBoxIndirimli_toggled(bool checked)
 
 
 void MainWindow::on_checkBoxUcretli_toggled(bool checked)
+{
+    populateProgramTable();
+}
+
+
+void MainWindow::on_checkBoxKKTCUyruklu_toggled(bool checked)
+{
+    populateProgramTable();
+}
+
+
+void MainWindow::on_checkBoxMTOK_toggled(bool checked)
 {
     populateProgramTable();
 }
