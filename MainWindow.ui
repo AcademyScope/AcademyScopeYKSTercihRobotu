@@ -390,17 +390,24 @@
        <property name="bottomMargin">
         <number>0</number>
        </property>
-       <item row="3" column="0">
+       <item row="4" column="0">
         <widget class="QCheckBox" name="checkBoxOkulBirincisi">
          <property name="text">
           <string>Okul Birincisi</string>
          </property>
         </widget>
        </item>
-       <item row="3" column="1">
+       <item row="4" column="1">
         <widget class="QCheckBox" name="checkBoxKKTCUyruklu">
          <property name="text">
           <string>KKTC Uyruklu</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0">
+        <widget class="QCheckBox" name="checkBoxDepremzede">
+         <property name="text">
+          <string>Depremzede</string>
          </property>
         </widget>
        </item>
@@ -414,31 +421,31 @@
          </property>
         </widget>
        </item>
-       <item row="4" column="0">
-        <widget class="QCheckBox" name="checkBoxDepremzede">
+       <item row="7" column="1">
+        <widget class="QCheckBox" name="checkBoxEkKontenjan">
          <property name="text">
-          <string>Depremzede</string>
+          <string>Ek Kontenjan</string>
          </property>
         </widget>
        </item>
-       <item row="2" column="1">
+       <item row="5" column="1">
+        <widget class="QCheckBox" name="checkBoxMTOK">
+         <property name="text">
+          <string>M.T.O.K</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="0">
         <widget class="QCheckBox" name="checkBoxKadin34">
          <property name="text">
           <string>34+ Kadın</string>
          </property>
         </widget>
        </item>
-       <item row="6" column="0" colspan="2">
+       <item row="2" column="1">
         <widget class="QCheckBox" name="checkBoxSehitGaziYakini">
          <property name="text">
           <string>Şehit / Gazi Yakını</string>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="1">
-        <widget class="QCheckBox" name="checkBoxMTOK">
-         <property name="text">
-          <string>M.T.O.K</string>
          </property>
         </widget>
        </item>

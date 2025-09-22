@@ -609,3 +609,9 @@ void MainWindow::on_checkBoxMTOK_toggled(bool checked)
     populateProgramTable();
 }
 
+
+void MainWindow::on_checkBoxEkKontenjan_toggled(bool checked)
+{
+    populateProgramTable();
+}
+
