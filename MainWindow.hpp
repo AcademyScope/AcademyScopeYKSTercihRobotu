@@ -39,6 +39,12 @@ private slots:
 
     void on_comboBoxUniversityType_currentIndexChanged(int index);
 
+    void on_checkBoxUcretsiz_toggled(bool checked);
+
+    void on_checkBoxIndirimli_toggled(bool checked);
+
+    void on_checkBoxUcretli_toggled(bool checked);
+
 private:
     Ui::MainWindow *ui;
     void initDB();

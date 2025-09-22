@@ -220,6 +220,9 @@ void MainWindow::populateProgramTable(int sortCol, Qt::SortOrder ord){
 
     QStringList whereQueries;
     QStringList kontenjanQueries;
+    QStringList tuitionQueries;
+    QString kontenjanSubQuery = "";
+    QString tuitionSubQuery = "";
     QList<QPair<int, QString>> universities;
 
 
@@ -278,26 +281,53 @@ void MainWindow::populateProgramTable(int sortCol, Qt::SortOrder ord){
         kontenjanQueries.append("Kadin34_Kontenjan IS NOT NULL");
     }
 
+    if (ui->checkBoxUcretsiz->isChecked()) {
+        tuitionQueries.append("UcretDurumu = 0");
+    }
+
+    if (ui->checkBoxIndirimli->isChecked()) {
+        tuitionQueries.append("UcretDurumu = 50");
+    }
+
+    if (ui->checkBoxUcretli->isChecked()) {
+        tuitionQueries.append("UcretDurumu = 100");
+    }
+
+    if(!kontenjanQueries.isEmpty()) {
+        kontenjanSubQuery += "(" + kontenjanQueries[0];
+        for(int i = 1; i < kontenjanQueries.size(); i++) {
+            kontenjanSubQuery += " OR " + kontenjanQueries[i];
+        }
+        kontenjanSubQuery += ")";
+    }
+
+    if(!kontenjanSubQuery.isEmpty()) {
+        whereQueries.append(kontenjanSubQuery);
+    }
+
+    if(!tuitionQueries.isEmpty()) {
+        tuitionSubQuery += "(" + tuitionQueries[0];
+        for(int i = 1; i < tuitionQueries.size(); i++) {
+            tuitionSubQuery += " OR " + tuitionQueries[i];
+        }
+        tuitionSubQuery += ")";
+    }
+
+    if(!tuitionSubQuery.isEmpty())
+        whereQueries.append(tuitionSubQuery);
+
+    if(kontenjanSubQuery.isEmpty() || tuitionSubQuery.isEmpty()) {
+        ui->tableWidgetPrograms->setRowCount(0);
+        return;
+    }
+
+    // LASTLY (FINALLY) process "WHERE" queries
     if(!whereQueries.isEmpty()) {
         sqlQuery += " WHERE ";
         sqlQuery += whereQueries[0];
         for(int i = 1; i < whereQueries.size(); i++) {
             sqlQuery += " AND " + whereQueries[i];
         }
-    }
-
-    if(!kontenjanQueries.isEmpty()) {
-        if(whereQueries.isEmpty()) {
-            sqlQuery += " WHERE (";
-        }
-        else {
-            sqlQuery += " AND (";
-        }
-        sqlQuery += kontenjanQueries[0];
-        for(int i = 1; i < kontenjanQueries.size(); i++) {
-            sqlQuery += " OR " + kontenjanQueries[i];
-        }
-        sqlQuery += ")";
     }
 
     if (query.exec(sqlQuery)) {
@@ -531,6 +561,24 @@ void MainWindow::on_comboBoxLicenseType_currentIndexChanged(int index)
 
 
 void MainWindow::on_comboBoxUniversityType_currentIndexChanged(int index)
+{
+    populateProgramTable();
+}
+
+
+void MainWindow::on_checkBoxUcretsiz_toggled(bool checked)
+{
+    populateProgramTable();
+}
+
+
+void MainWindow::on_checkBoxIndirimli_toggled(bool checked)
+{
+    populateProgramTable();
+}
+
+
+void MainWindow::on_checkBoxUcretli_toggled(bool checked)
 {
     populateProgramTable();
 }

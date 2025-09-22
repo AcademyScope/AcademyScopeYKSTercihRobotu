@@ -24,13 +24,16 @@
        </size>
       </property>
       <property name="title">
-       <string>Burs Durumu</string>
+       <string>Eğitim Ücreti</string>
       </property>
       <layout class="QGridLayout" name="gridLayout_3">
        <item row="0" column="1">
         <widget class="QCheckBox" name="checkBoxUcretsiz">
          <property name="text">
           <string>Ücretsiz</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -39,12 +42,18 @@
          <property name="text">
           <string>İndirimli</string>
          </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
         </widget>
        </item>
        <item row="2" column="1">
         <widget class="QCheckBox" name="checkBoxUcretli">
          <property name="text">
           <string>Ücretli</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -241,6 +250,9 @@
       </item>
       <item>
        <widget class="QComboBox" name="comboBoxUlke">
+        <property name="currentIndex">
+         <number>1</number>
+        </property>
         <item>
          <property name="text">
           <string>Tüm Ülkeler</string>
