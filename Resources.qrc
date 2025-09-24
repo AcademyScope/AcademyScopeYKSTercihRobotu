@@ -1,1 +1,6 @@
-<RCC/>
+<RCC>
+    <qresource prefix="/">
+        <file>Resources/Images/AcademyScope.png</file>
+        <file>Resources/Images/SinavCraft.jpg</file>
+    </qresource>
+</RCC>
