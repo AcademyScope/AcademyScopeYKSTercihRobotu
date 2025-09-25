@@ -3,6 +3,7 @@
 #include <QMainWindow>
 #include <QLocale>
 #include <QSqlDatabase>
+#include "EnumDefinitions.hpp"
 
 #define DB_PATH "/Volumes/Projects/YKSEpiSelecta/YKS.SQLite"
 
@@ -59,6 +60,8 @@ private slots:
 
     void on_pushButtonAbout_clicked();
 
+    void on_comboBoxTercihTuru_currentIndexChanged(int index);
+
 private:
     Ui::MainWindow *ui;
     void initDB();
@@ -75,32 +78,5 @@ private:
     Qt::SortOrder lastSortOrder = Qt::AscendingOrder;
     QStringList yksTableColumnNames;
     QSqlDatabase db;
-};
-
-enum class ProgramTableColumns : int {
-    ProgramKodu = 0,
-    Universite,
-    Kampus,
-    Program,
-    PuanTuru,
-    GenelKontenjan,
-    GenelYerlesen,
-    GenelBasariSirasi,
-    GenelEnKucukPuan,
-    OkulBirincisiKontenjan,
-    OkulBirincisiYerlesen,
-    OkulBirincisiBasariSirasi,
-    OkulBirincisiEnKucukPuan,
-    SehitGaziYakiniKontenjan,
-    SehitGaziYakiniYerlesen,
-    SehitGaziYakiniBasariSirasi,
-    SehitGaziYakiniEnKucukPuan,
-    DepremzedeKontenjan,
-    DepremzedeYerlesen,
-    DepremzedeBasariSirasi,
-    DepremzedeEnKucukPuan,
-    Kadin34PlusKontenjan,
-    Kadin34PlusYerlesen,
-    Kadin34PlusBasariSirasi,
-    Kadin34PlusEnKucukPuan
+    TercihTuru tercihTuru = TercihTuru::NormalTercih;
 };

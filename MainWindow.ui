@@ -369,10 +369,7 @@
        </widget>
       </item>
       <item row="2" column="3" colspan="2">
-       <widget class="QComboBox" name="comboBoxLicenseType_2">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
+       <widget class="QComboBox" name="comboBoxTercihTuru">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -387,17 +384,12 @@
         </property>
         <item>
          <property name="text">
-          <string>Normal Yerleşim</string>
+          <string>Normal Tercih</string>
          </property>
         </item>
         <item>
          <property name="text">
           <string>Ek Tercih</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Hepsi</string>
          </property>
         </item>
        </widget>
@@ -423,7 +415,7 @@
          </size>
         </property>
         <property name="text">
-         <string>Yerleşim Türü</string>
+         <string>Tercih Türü</string>
         </property>
        </widget>
       </item>

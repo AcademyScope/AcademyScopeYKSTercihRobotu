@@ -181,8 +181,12 @@ void MainWindow::populateProgramTable(int sortCol, Qt::SortOrder ord){
     QString tuitionSubQuery = "";
     QList<QPair<int, QString>> universities;
 
+    QString sqlQuery = "Select * FROM ";
+    if(tercihTuru == TercihTuru::NormalTercih)
+        sqlQuery += "YKS";
+    else if(tercihTuru == TercihTuru::EkTercih)
+        sqlQuery += "EkTercihDetayli";
 
-    QString sqlQuery = "SELECT * FROM YKS";
     if(universityName.trimmed() != "") {
         whereQueries.append("UniversiteAdi LIKE \"%" + universityName + "%\"");
     }
@@ -575,5 +579,14 @@ void MainWindow::on_pushButtonAbout_clicked()
 {
     AboutDialog aboutDialog;
     aboutDialog.exec();
+}
+
+void MainWindow::on_comboBoxTercihTuru_currentIndexChanged(int index)
+{
+    if(index == 0)
+        tercihTuru = TercihTuru::NormalTercih;
+    else
+        tercihTuru = TercihTuru::EkTercih;
+    populateProgramTable();
 }
 
