@@ -222,23 +222,23 @@ void MainWindow::populateProgramTable(int sortCol, Qt::SortOrder ord){
     }
 
     if (ui->checkBoxGenel->isChecked()) {
-        kontenjanQueries.append("Genel_Kontenjan IS NOT NULL");
+        kontenjanQueries.append("GenelKontenjan IS NOT NULL");
     }
 
     if (ui->checkBoxOkulBirincisi->isChecked()) {
-        kontenjanQueries.append("OB_Kontenjan IS NOT NULL");
+        kontenjanQueries.append("OkulBirincisiKontenjan IS NOT NULL");
     }
 
     if (ui->checkBoxSehitGaziYakini->isChecked()) {
-        kontenjanQueries.append("SehitGazi_Kontenjan IS NOT NULL");
+        kontenjanQueries.append("SehitGaziKontenjan IS NOT NULL");
     }
 
     if (ui->checkBoxDepremzede->isChecked()) {
-        kontenjanQueries.append("Dep_Kontenjan IS NOT NULL");
+        kontenjanQueries.append("DepremzedeKontenjan IS NOT NULL");
     }
 
     if (ui->checkBoxKadin34->isChecked()) {
-        kontenjanQueries.append("Kadin34_Kontenjan IS NOT NULL");
+        kontenjanQueries.append("Kadin34Kontenjan IS NOT NULL");
     }
 
     if (ui->checkBoxUcretsiz->isChecked()) {
@@ -315,53 +315,60 @@ void MainWindow::populateProgramTable(int sortCol, Qt::SortOrder ord){
             QString universityType = query.value("UniversiteTuru").toString();
             QString universityName = query.value("UniversiteAdi").toString();
             QString facultyName = query.value("FakulteYuksekokulAdi").toString();
-            QString programName = query.value("ProgramAdi").toString();
-            QString pointsKind = query.value("PuanTuru").toString();
-            int genelKontenjan = query.value("Genel_Kontenjan").toInt();
-            int genelYerlesen = query.value("Genel_Yerlesen").toInt();
-            double generalMinimumPoints = query.value("Genel_EnKucukPuan").toDouble();
-            double generalMaximumPoints = query.value("Genel_EnBuyukPuan").toDouble();
+            QString programAdi = query.value("ProgramAdi").toString();
+            QString puanTuru = query.value("PuanTuru").toString();
+            QString genelKontenjan = query.value("GenelKontenjan").toString();
+            QString generalMinimumPoints = query.value("GenelEnKucukPuan").toString();
 
-            QString okulBirincisiKontenjan = query.value("OB_Kontenjan").toString();
-            QString okulBirincisiEnKucukPuan = query.value("OB_EnKucukPuan").toString();
-            QString okulBirincisiYerlesen = query.value("OB_Yerlesen").toString();
+            QString sehitGaziKontenjan = query.value("SehitGaziKontenjan").toString();
+            QString sehitGaziEnKucukPuan = query.value("SehitGaziEnKucukPuan").toString();
 
-            QString sehitGaziKontenjan = query.value("SehitGazi_Kontenjan").toString();
-            QString sehitGaziEnKucukPuan = query.value("SehitGazi_EnKucukPuan").toString();
-            QString sehitGaziYerlesen = query.value("SehitGazi_Yerlesen").toString();
+            QString depremzedeKontenjan = query.value("DepremzedeKontenjan").toString();
+            QString depremzedeEnKucukPuan = query.value("DepremzedeEnKucukPuan").toString();
 
-            QString depremzedeKontenjan = query.value("Dep_Kontenjan").toString();
-            QString depremzedeEnKucukPuan = query.value("Dep_EnKucukPuan").toString();
-            QString depremzedeYerlesen = query.value("Dep_Yerlesen").toString();
+            QString kadin34Kontenjan = query.value("Kadin34Kontenjan").toString();
+            QString kadin34EnKucukPuan = query.value("Kadin34EnKucukPuan").toString();
 
-            QString kadin34Kontenjan = query.value("Kadin34_Kontenjan").toString();
-            QString kadin34EnKucukPuan = query.value("Kadin34_EnKucukPuan").toString();
-            QString kadin34Yerlesen = query.value("Kadin34_Yerlesen").toString();
+            //Ek kontenjanda yok
+            if(tercihTuru == TercihTuru::NormalTercih) {
+                //Ek kontenjanda yok
+                QString okulBirincisiKontenjan = query.value("OkulBirincisiKontenjan").toString();
+                QString okulBirincisiEnKucukPuan = query.value("OkulBirincisiEnKucukPuan").toString();
+
+                QString okulBirincisiYerlesen = query.value("OkulBirincisiYerlesen").toString();
+                QString sehitGaziYerlesen = query.value("SehitGaziYerlesen").toString();
+                QString depremzedeYerlesen = query.value("DepremzedeYerlesen").toString();
+                QString kadin34Yerlesen = query.value("Kadin34Yerlesen").toString();
+
+                QString genelYerlesen = query.value("GenelYerlesen").toString();
+                QString generalMaximumPoints = query.value("GenelEnBuyukPuan").toString();
+
+                ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::GenelYerlesen, new QTableWidgetItem(genelYerlesen));
+                ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::OkulBirincisiYerlesen, new QTableWidgetItem(okulBirincisiYerlesen));
+                ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::SehitGaziYakiniYerlesen, new QTableWidgetItem(sehitGaziYerlesen));
+                ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::DepremzedeYerlesen, new QTableWidgetItem(depremzedeYerlesen));
+                ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::Kadin34PlusYerlesen, new QTableWidgetItem(kadin34Yerlesen));
+
+                ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::OkulBirincisiKontenjan, new QTableWidgetItem(okulBirincisiKontenjan));
+                ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::OkulBirincisiEnKucukPuan, new QTableWidgetItem(okulBirincisiEnKucukPuan));
+            }
 
             ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::ProgramKodu, new QTableWidgetItem(QString::number(id)));
             ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::Universite, new QTableWidgetItem(universityName));
             ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::Kampus, new QTableWidgetItem(facultyName));
-            ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::Program, new QTableWidgetItem(programName));
-            ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::PuanTuru, new QTableWidgetItem(pointsKind));
+            ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::Program, new QTableWidgetItem(programAdi));
+            ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::PuanTuru, new QTableWidgetItem(puanTuru));
 
-            ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::GenelKontenjan, new QTableWidgetItem(QString::number(genelKontenjan)));
-            ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::GenelYerlesen, new QTableWidgetItem(QString::number(genelYerlesen)));
-            ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::GenelEnKucukPuan, new QTableWidgetItem(QString::number(generalMinimumPoints)));
-
-            ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::OkulBirincisiKontenjan, new QTableWidgetItem(okulBirincisiKontenjan));
-            ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::OkulBirincisiYerlesen, new QTableWidgetItem(okulBirincisiYerlesen));
-            ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::OkulBirincisiEnKucukPuan, new QTableWidgetItem(okulBirincisiEnKucukPuan));
+            ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::GenelKontenjan, new QTableWidgetItem(genelKontenjan));
+            ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::GenelEnKucukPuan, new QTableWidgetItem(generalMinimumPoints));
 
             ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::SehitGaziYakiniKontenjan, new QTableWidgetItem(sehitGaziKontenjan));
-            ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::SehitGaziYakiniYerlesen, new QTableWidgetItem(sehitGaziYerlesen));
             ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::SehitGaziYakiniEnKucukPuan, new QTableWidgetItem(sehitGaziEnKucukPuan));
 
             ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::DepremzedeKontenjan, new QTableWidgetItem(depremzedeKontenjan));
-            ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::DepremzedeYerlesen, new QTableWidgetItem(depremzedeYerlesen));
             ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::DepremzedeEnKucukPuan, new QTableWidgetItem(depremzedeEnKucukPuan));
 
             ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::Kadin34PlusKontenjan, new QTableWidgetItem(kadin34Kontenjan));
-            ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::Kadin34PlusYerlesen, new QTableWidgetItem(kadin34Yerlesen));
             ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::Kadin34PlusEnKucukPuan, new QTableWidgetItem(kadin34EnKucukPuan));
 
             row++;
@@ -429,7 +436,21 @@ void MainWindow::hideUnnecessaryColumnsOnTheProgramTable() {
         ui->tableWidgetPrograms->hideColumn((int) ProgramTableColumns::Kadin34PlusEnKucukPuan);
     }
 
-
+    //Ek kontenjanda yok
+    if(tercihTuru == TercihTuru::NormalTercih) {
+        ui->tableWidgetPrograms->showColumn((int) ProgramTableColumns::GenelYerlesen);
+        ui->tableWidgetPrograms->showColumn((int) ProgramTableColumns::OkulBirincisiYerlesen);
+        ui->tableWidgetPrograms->showColumn((int) ProgramTableColumns::SehitGaziYakiniYerlesen);
+        ui->tableWidgetPrograms->showColumn((int) ProgramTableColumns::DepremzedeYerlesen);
+        ui->tableWidgetPrograms->showColumn((int) ProgramTableColumns::Kadin34PlusYerlesen);
+    }
+    else {
+        ui->tableWidgetPrograms->hideColumn((int) ProgramTableColumns::GenelYerlesen);
+        ui->tableWidgetPrograms->hideColumn((int) ProgramTableColumns::OkulBirincisiYerlesen);
+        ui->tableWidgetPrograms->hideColumn((int) ProgramTableColumns::SehitGaziYakiniYerlesen);
+        ui->tableWidgetPrograms->hideColumn((int) ProgramTableColumns::DepremzedeYerlesen);
+        ui->tableWidgetPrograms->hideColumn((int) ProgramTableColumns::Kadin34PlusYerlesen);
+    }
 }
 
 void MainWindow::hideUnusedColumnsOnTheProgramTable() {
@@ -449,26 +470,26 @@ void MainWindow::initializeYKSTableColumnNames()
         "FakulteYuksekokulAdi",
         "ProgramAdi",
         "PuanTuru",
-        "Genel_Kontenjan",
-        "Genel_Yerlesen",
-        "Genel_EnKucukPuan",
-        "Genel_EnBuyukPuan",
-        "OB_Kontenjan",
-        "OB_Yerlesen",
-        "OB_EnKucukPuan",
-        "OB_EnBuyukPuan",
-        "Dep_Kontenjan",
-        "Dep_Yerlesen",
-        "Dep_EnKucukPuan",
-        "Dep_EnBuyukPuan",
-        "Kadin34_Kontenjan",
-        "Kadin34_Yerlesen",
-        "Kadin34_EnKucukPuan",
-        "Kadin34_EnBuyukPuan",
-        "SehitGazi_Kontenjan",
-        "SehitGazi_Yerlesen",
-        "SehitGazi_EnKucukPuan",
-        "SehitGazi_EnBuyukPuan",
+        "GenelKontenjan",
+        "GenelYerlesen",
+        "GenelEnKucukPuan",
+        "GenelEnBuyukPuan",
+        "OkulBirincisiKontenjan",
+        "OkulBirincisiYerlesen",
+        "OkulBirincisiEnKucukPuan",
+        "OkulBirincisiEnBuyukPuan",
+        "DepremzedeKontenjan",
+        "DepremzedeYerlesen",
+        "DepremzedeEnKucukPuan",
+        "DepremzedeEnBuyukPuan",
+        "Kadin34Kontenjan",
+        "Kadin34Yerlesen",
+        "Kadin34EnKucukPuan",
+        "Kadin34EnBuyukPuan",
+        "SehitGaziKontenjan",
+        "SehitGaziYerlesen",
+        "SehitGaziEnKucukPuan",
+        "SehitGaziEnBuyukPuan",
         "Lisans",
         "UlkeKodu"
     };
