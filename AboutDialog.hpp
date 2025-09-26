@@ -16,8 +16,12 @@ public:
     ~AboutDialog();
 
 private slots:
-    void on_buttonBox_clicked(QAbstractButton *button);
+    void on_buttonSinavCraft_clicked(QAbstractButton *button);
+
+    void on_pushButton_clicked();
 
 private:
     Ui::AboutDialog *ui;
+    QFont *InterFont;
+    QFont *InterFontTitle;
 };
