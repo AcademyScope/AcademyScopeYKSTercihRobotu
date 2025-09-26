@@ -1,1 +1,1 @@
-# YKSEpiSelecta
+# AcademyScope YKS Tercih Robotu
