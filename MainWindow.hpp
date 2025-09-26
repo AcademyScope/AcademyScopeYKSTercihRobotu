@@ -15,8 +15,11 @@ You should have received a copy of the GNU General Public License along with thi
 #include <QSqlDatabase>
 #include "EnumDefinitions.hpp"
 
+#ifdef QT_DEBUG
 #define DB_PATH "/Volumes/Projects/YKSEpiSelecta/YKS.SQLite"
-
+#else
+#define DB_PATH "./YKS.SQLite"
+#endif
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
