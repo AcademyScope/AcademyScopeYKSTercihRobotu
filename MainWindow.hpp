@@ -14,6 +14,7 @@ You should have received a copy of the GNU General Public License along with thi
 #include <QLocale>
 #include <QSqlDatabase>
 #include "EnumDefinitions.hpp"
+#include <QHeaderView>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -70,20 +71,24 @@ private slots:
 
     void on_comboBoxTercihTuru_currentIndexChanged(int index);
 
+    void onProgramTableHeaderItemClicked(int logicalIndex);
+
 private:
     Ui::MainWindow *ui;
     void initDB();
     void setProgramTableColumnWidths();
     void populateUniversitiesComboBox();
     void populateDepartmentsComboBox();
-    void populateProgramTable(int sortCol = -1, Qt::SortOrder ord = Qt::AscendingOrder);
+    void populateProgramTable();
     void hideUnnecessaryColumnsOnTheProgramTable();
     void hideUnusedColumnsOnTheProgramTable();
     void initializeYKSTableColumnNames();
+    QString getDbColumnNameFromProgramTableColumnIndex(int columnIndex);
 
     QLocale turkishLocale;
     int lastSortCol = -1;
     Qt::SortOrder lastSortOrder = Qt::AscendingOrder;
+    QHeaderView * programTableHorizontalHeader = nullptr;
     QStringList yksTableColumnNames;
     QSqlDatabase db;
     TercihTuru tercihTuru = TercihTuru::NormalTercih;

@@ -71,20 +71,23 @@ MainWindow::MainWindow(QWidget *parent)
     hideUnnecessaryColumnsOnTheProgramTable();
     populateProgramTable();
 
-    auto *hdr = ui->tableWidgetPrograms->horizontalHeader();
-    hdr->setSortIndicatorShown(true);
-    connect(hdr, &QHeaderView::sectionClicked, this, [=](int col){
-        // When clicked to the title of a row again, change the order direction
-        if (lastSortCol == col)
-            lastSortOrder = (lastSortOrder == Qt::AscendingOrder) ? Qt::DescendingOrder
-                                                                  : Qt::AscendingOrder;
-        else {
-            lastSortCol = col;
-            lastSortOrder = Qt::AscendingOrder;
-        }
-        hdr->setSortIndicator(lastSortCol, lastSortOrder);
-        populateProgramTable(lastSortCol, lastSortOrder);
-    });
+    programTableHorizontalHeader = ui->tableWidgetPrograms->horizontalHeader();
+    programTableHorizontalHeader->setSortIndicatorShown(true);
+    connect(programTableHorizontalHeader, &QHeaderView::sectionClicked, this, &MainWindow::onProgramTableHeaderItemClicked);
+}
+
+void MainWindow::onProgramTableHeaderItemClicked(int logicalIndex) {
+    qDebug()<<"item clicked " << getDbColumnNameFromProgramTableColumnIndex(logicalIndex);
+    // When clicked to the title of a row again, change the order direction
+    if (lastSortCol == logicalIndex)
+        lastSortOrder = (lastSortOrder == Qt::AscendingOrder) ? Qt::DescendingOrder
+                                                              : Qt::AscendingOrder;
+    else {
+        lastSortCol = logicalIndex;
+        lastSortOrder = Qt::AscendingOrder;
+    }
+    programTableHorizontalHeader->setSortIndicator(lastSortCol, lastSortOrder);
+    populateProgramTable();
 }
 
 MainWindow::~MainWindow()
@@ -183,9 +186,11 @@ void MainWindow::populateDepartmentsComboBox() {
 }
 
 
-void MainWindow::populateProgramTable(int sortCol, Qt::SortOrder ord){
+void MainWindow::populateProgramTable(){
     if (!db.isOpen())
         return;
+
+    hideUnnecessaryColumnsOnTheProgramTable();
 
     QString universityName = ui->comboBoxUniversity->currentText();
     QString department = ui->comboBoxDepartment->currentText();
@@ -322,10 +327,17 @@ void MainWindow::populateProgramTable(int sortCol, Qt::SortOrder ord){
         }
     }
 
+    if(lastSortCol != -1 && !ui->tableWidgetPrograms->isColumnHidden(lastSortCol)) {
+        sqlQuery += " ORDER BY " + getDbColumnNameFromProgramTableColumnIndex(lastSortCol);
+        if(lastSortOrder == Qt::AscendingOrder)
+            sqlQuery += " ASC";
+        else
+            sqlQuery += " DESC";
+    }
+
     if (query.exec(sqlQuery)) {
         ui->tableWidgetPrograms->clearContents();
         ui->tableWidgetPrograms->setRowCount(0);
-        hideUnnecessaryColumnsOnTheProgramTable();
 
         int row = 0;
         while (query.next()) {
@@ -512,6 +524,33 @@ void MainWindow::initializeYKSTableColumnNames()
         "Lisans",
         "UlkeKodu"
     };
+}
+
+QString MainWindow::getDbColumnNameFromProgramTableColumnIndex(int columnIndex) {
+    switch (static_cast<ProgramTableColumns>(columnIndex)) {
+    case ProgramTableColumns::ProgramKodu:              return "ProgramKodu";
+    case ProgramTableColumns::Universite:               return "UniversiteAdi";
+    case ProgramTableColumns::Kampus:                   return "FakulteYuksekokulAdi";
+    case ProgramTableColumns::Program:                  return "ProgramAdi";
+    case ProgramTableColumns::PuanTuru:                 return "PuanTuru";
+    case ProgramTableColumns::GenelKontenjan:           return "GenelKontenjan";
+    case ProgramTableColumns::GenelYerlesen:            return "GenelYerlesen";
+    case ProgramTableColumns::GenelEnKucukPuan:         return "GenelEnKucukPuan";
+    case ProgramTableColumns::OkulBirincisiKontenjan:   return "OkulBirincisiKontenjan";
+    case ProgramTableColumns::OkulBirincisiYerlesen:    return "OkulBirincisiYerlesen";
+    case ProgramTableColumns::OkulBirincisiEnKucukPuan: return "OkulBirincisiEnKucukPuan";
+    case ProgramTableColumns::SehitGaziYakiniKontenjan: return "SehitGaziKontenjan";
+    case ProgramTableColumns::SehitGaziYakiniYerlesen:  return "SehitGaziYerlesen";
+    case ProgramTableColumns::SehitGaziYakiniEnKucukPuan:return "SehitGaziEnKucukPuan";
+    case ProgramTableColumns::DepremzedeKontenjan:      return "DepremzedeKontenjan";
+    case ProgramTableColumns::DepremzedeYerlesen:       return "DepremzedeYerlesen";
+    case ProgramTableColumns::DepremzedeEnKucukPuan:    return "DepremzedeEnKucukPuan";
+    case ProgramTableColumns::Kadin34PlusKontenjan:     return "Kadin34Kontenjan";
+    case ProgramTableColumns::Kadin34PlusYerlesen:      return "Kadin34Yerlesen";
+    case ProgramTableColumns::Kadin34PlusEnKucukPuan:   return "Kadin34EnKucukPuan";
+    default: return QString();
+    }
+
 }
 
 void MainWindow::on_checkBoxGenel_toggled(bool checked)
