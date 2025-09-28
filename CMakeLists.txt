@@ -74,7 +74,6 @@ set_target_properties(AcademyScope PROPERTIES
     WIN32_EXECUTABLE TRUE
 )
 
-
 ####################
 
 # Copy YKS.sqlite only for non-Debug builds
@@ -90,7 +89,7 @@ if(APPLE)
     COMMAND ${CMAKE_COMMAND} -E make_directory "${BUNDLE_DB_DIR}"
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
             "${CMAKE_SOURCE_DIR}/Databases/YKS.sqlite"
-            "${BUNDLE_DB_DIR}/YKS.sqlite"
+            "${BUNDLE_DB_DIR}/YKS.SQLite"
     COMMENT "Copying YKS.sqlite into app bundle (macOS, non-Debug)"
     VERBATIM
     CONFIGURATIONS Release RelWithDebInfo MinSizeRel
@@ -105,7 +104,7 @@ if(WIN32)
     COMMAND ${CMAKE_COMMAND} -E make_directory "${BIN_DB_DIR}"
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
             "${CMAKE_SOURCE_DIR}/Databases/YKS.sqlite"
-            "${BIN_DB_DIR}/Databases/YKS.sqlite"
+            "${BIN_DB_DIR}/YKS.SQLite"
     COMMENT "Copying YKS.sqlite next to the binary (Windows, non-Debug)"
     VERBATIM
     CONFIGURATIONS Release RelWithDebInfo MinSizeRel
@@ -120,16 +119,13 @@ if(UNIX AND NOT APPLE)
     COMMAND ${CMAKE_COMMAND} -E make_directory "${BIN_DB_DIR}"
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
             "${CMAKE_SOURCE_DIR}/Databases/YKS.sqlite"
-            "${BIN_DB_DIR}/Databases/YKS.sqlite"
+            "${BIN_DB_DIR}/YKS.SQLite"
     COMMENT "Copying YKS.sqlite next to the binary (Linux, non-Debug)"
     VERBATIM
     CONFIGURATIONS Release RelWithDebInfo MinSizeRel
   )
 endif()
 #################
-
-
-
 
 include(GNUInstallDirs)
 install(TARGETS AcademyScope
