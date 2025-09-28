@@ -105,7 +105,7 @@ if(WIN32)
     COMMAND ${CMAKE_COMMAND} -E make_directory "${BIN_DB_DIR}"
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
             "${CMAKE_SOURCE_DIR}/Databases/YKS.sqlite"
-            "${BIN_DB_DIR}/YKS.sqlite"
+            "${BIN_DB_DIR}/Databases/YKS.sqlite"
     COMMENT "Copying YKS.sqlite next to the binary (Windows, non-Debug)"
     VERBATIM
     CONFIGURATIONS Release RelWithDebInfo MinSizeRel
@@ -120,7 +120,7 @@ if(UNIX AND NOT APPLE)
     COMMAND ${CMAKE_COMMAND} -E make_directory "${BIN_DB_DIR}"
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
             "${CMAKE_SOURCE_DIR}/Databases/YKS.sqlite"
-            "${BIN_DB_DIR}/YKS.sqlite"
+            "${BIN_DB_DIR}/Databases/YKS.sqlite"
     COMMENT "Copying YKS.sqlite next to the binary (Linux, non-Debug)"
     VERBATIM
     CONFIGURATIONS Release RelWithDebInfo MinSizeRel
