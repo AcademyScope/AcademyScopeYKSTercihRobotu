@@ -328,7 +328,9 @@ void MainWindow::populateProgramTable(){
     }
 
     if(lastSortCol != -1 && !ui->tableWidgetPrograms->isColumnHidden(lastSortCol)) {
-        sqlQuery += " ORDER BY " + getDbColumnNameFromProgramTableColumnIndex(lastSortCol);
+        QString col = getDbColumnNameFromProgramTableColumnIndex(lastSortCol);
+        const QString key = SQLiteUtil::trOrderExprFor(col);
+        sqlQuery += " ORDER BY " + key;
         if(lastSortOrder == Qt::AscendingOrder)
             sqlQuery += " ASC";
         else

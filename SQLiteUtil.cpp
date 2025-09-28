@@ -51,3 +51,28 @@ QString SQLiteUtil::resolveDatabasePath() {
     #endif
 #endif
 }
+
+QString SQLiteUtil::trOrderExprFor(const QString& col) {
+    // Only text columns to be processed
+    if (!(col == "UniversiteAdi" || col == "FakulteYuksekokulAdi" ||
+          col == "ProgramAdi"    || col == "PuanTuru")) {
+        return col;
+    }
+
+    struct Map { const char* from; const char* to; };
+    static const Map m[] = {
+                            {"Ç","CZ"}, {"ç","cz"},
+                            {"Ğ","GZ"}, {"ğ","gz"},
+                            {"İ","IZ"}, {"i","iz"},
+                            {"I","IY"}, {"ı","iy"},
+                            {"Ö","OZ"}, {"ö","oz"},
+                            {"Ş","SZ"}, {"ş","sz"},
+                            {"Ü","UZ"}, {"ü","uz"},
+                            };
+
+    QString expr = col;
+    for (const auto& kv : m) {
+        expr = QStringLiteral("REPLACE(%1,'%2','%3')").arg(expr, kv.from, kv.to);
+    }
+    return expr;
+}
