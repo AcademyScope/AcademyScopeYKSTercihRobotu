@@ -26,8 +26,12 @@ set(PROJECT_SOURCES
         MainWindow.cpp
         MainWindow.hpp
         MainWindow.ui
+        EnumDefinitions.hpp
         BackEnd.cpp
         BackEnd.hpp
+        SQLiteUtil.hpp SQLiteUtil.cpp
+        TurkishFilterProxy.hpp TurkishFilterProxy.cpp
+        AboutDialog.hpp AboutDialog.cpp AboutDialog.ui
         Resources.qrc
 )
 
@@ -35,11 +39,6 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(AcademyScope
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
-        TurkishFilterProxy.hpp TurkishFilterProxy.cpp
-
-        AboutDialog.hpp AboutDialog.cpp AboutDialog.ui
-        Resources.qrc
-        EnumDefinitions.hpp
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET AcademyScope APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
@@ -74,6 +73,63 @@ set_target_properties(AcademyScope PROPERTIES
     MACOSX_BUNDLE TRUE
     WIN32_EXECUTABLE TRUE
 )
+
+
+####################
+
+# Copy YKS.sqlite only for non-Debug builds
+# Ensure your source file name matches exactly (case-sensitive on Linux):
+#   ${CMAKE_SOURCE_DIR}/Databases/YKS.sqlite
+# If your actual file is "YKS.SQLite", change both places consistently.
+
+# Copy YKS.sqlite into the app bundle (macOS only, non-Debug)
+if(APPLE)
+  set(BUNDLE_DB_DIR "$<TARGET_FILE_DIR:AcademyScope>/../Resources/Databases")
+
+  add_custom_command(TARGET AcademyScope POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E make_directory "${BUNDLE_DB_DIR}"
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            "${CMAKE_SOURCE_DIR}/Databases/YKS.sqlite"
+            "${BUNDLE_DB_DIR}/YKS.sqlite"
+    COMMENT "Copying YKS.sqlite into app bundle (macOS, non-Debug)"
+    VERBATIM
+    CONFIGURATIONS Release RelWithDebInfo MinSizeRel
+  )
+endif()
+
+# Windows: copy next to the binary under Databases/ (Release-only)
+if(WIN32)
+  set(BIN_DB_DIR "$<TARGET_FILE_DIR:AcademyScope>/Databases")
+
+  add_custom_command(TARGET AcademyScope POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E make_directory "${BIN_DB_DIR}"
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            "${CMAKE_SOURCE_DIR}/Databases/YKS.sqlite"
+            "${BIN_DB_DIR}/YKS.sqlite"
+    COMMENT "Copying YKS.sqlite next to the binary (Windows, non-Debug)"
+    VERBATIM
+    CONFIGURATIONS Release RelWithDebInfo MinSizeRel
+  )
+endif()
+
+# Linux: copy next to the binary under Databases/ (Release-only)
+if(UNIX AND NOT APPLE)
+  set(BIN_DB_DIR "$<TARGET_FILE_DIR:AcademyScope>/Databases")
+
+  add_custom_command(TARGET AcademyScope POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E make_directory "${BIN_DB_DIR}"
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            "${CMAKE_SOURCE_DIR}/Databases/YKS.sqlite"
+            "${BIN_DB_DIR}/YKS.sqlite"
+    COMMENT "Copying YKS.sqlite next to the binary (Linux, non-Debug)"
+    VERBATIM
+    CONFIGURATIONS Release RelWithDebInfo MinSizeRel
+  )
+endif()
+#################
+
+
+
 
 include(GNUInstallDirs)
 install(TARGETS AcademyScope

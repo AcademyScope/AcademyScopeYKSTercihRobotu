@@ -21,6 +21,10 @@ You should have received a copy of the GNU General Public License along with thi
 #include <QLineEdit>
 #include <QCollator>
 #include "AboutDialog.hpp"
+#include <QFile>
+#include <QStandardPaths>
+#include <QDir>
+#include <QtGlobal>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -94,7 +98,21 @@ void MainWindow::on_comboBoxUniversity_editTextChanged(const QString &arg1)
 
 void MainWindow::initDB() {
     db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName(DB_PATH);
+
+    QString dbPath;
+    #ifdef QT_DEBUG
+        dbPath = QFileInfo(__FILE__).absolutePath() + "/Databases/YKS.SQLite";
+    #else
+        #ifdef Q_OS_MACOS
+            QString appDir = QCoreApplication::applicationDirPath(); // .../MyApp.app/Contents/MacOS
+            dbPath = QDir(appDir).filePath("../Resources/Databases/YKS.SQLite");
+            dbPath = QDir::cleanPath(dbPath);
+        #else
+            dbPath = "./YKS.SQLite"
+        #endif
+    #endif
+
+    db.setDatabaseName(dbPath);
 
     if (!db.open()) {
         qDebug() << "Veritabanı açılamadı:" << db.lastError().text();
