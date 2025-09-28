@@ -333,6 +333,7 @@ void MainWindow::populateProgramTable(int sortCol, Qt::SortOrder ord){
     }
 
     if (query.exec(sqlQuery)) {
+        ui->tableWidgetPrograms->clearContents();
         ui->tableWidgetPrograms->setRowCount(0);
         hideUnnecessaryColumnsOnTheProgramTable();
 
