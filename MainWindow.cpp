@@ -424,7 +424,11 @@ void MainWindow::populateProgramTable(){
         }
     }
 
-    if(lastSortCol != -1 && !ui->tableWidgetPrograms->isColumnHidden(lastSortCol)) {
+    if(lastSortCol == -1) {
+        const QString key = SQLiteUtil::trOrderExprFor("ProgramKodu");
+        sqlQuery += " ORDER BY ProgramKodu ASC";
+    }
+    else if(!ui->tableWidgetPrograms->isColumnHidden(lastSortCol)) {
         QString col = getDbColumnNameFromProgramTableColumnIndex(lastSortCol);
         const QString key = SQLiteUtil::trOrderExprFor(col);
         sqlQuery += " ORDER BY " + key;
@@ -432,11 +436,6 @@ void MainWindow::populateProgramTable(){
             sqlQuery += " ASC";
         else
             sqlQuery += " DESC";
-    }
-
-    if(lastSortCol == -1) {
-        const QString key = SQLiteUtil::trOrderExprFor("ProgramKodu");
-        sqlQuery += " ORDER BY ProgramKodu ASC";
     }
 
     if (query.exec(sqlQuery)) {
