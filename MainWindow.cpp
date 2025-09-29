@@ -434,6 +434,11 @@ void MainWindow::populateProgramTable(){
             sqlQuery += " DESC";
     }
 
+    if(lastSortCol == -1) {
+        const QString key = SQLiteUtil::trOrderExprFor("ProgramKodu");
+        sqlQuery += " ORDER BY ProgramKodu ASC";
+    }
+
     if (query.exec(sqlQuery)) {
         int row = 0;
         while (query.next()) {
