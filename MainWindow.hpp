@@ -73,6 +73,12 @@ private slots:
 
     void onProgramTableHeaderItemClicked(int logicalIndex);
 
+    void on_pushButtonClearPuanAraligi_clicked();
+
+    void on_doubleSpinBoxEnKucukPuan_valueChanged(double arg1);
+
+    void on_doubleSpinBoxEnBuyukPuan_valueChanged(double arg1);
+
 private:
     Ui::MainWindow *ui;
     void initDB();

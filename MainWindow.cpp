@@ -33,6 +33,8 @@ MainWindow::MainWindow(QWidget *parent)
     , turkishLocale(QLocale::Turkish, QLocale::Turkey)
 {
     ui->setupUi(this);
+    ui->doubleSpinBoxEnKucukPuan->setButtonSymbols(QAbstractSpinBox::NoButtons);
+    ui->doubleSpinBoxEnBuyukPuan->setButtonSymbols(QAbstractSpinBox::NoButtons);
     setProgramTableColumnWidths();
     initDB();
     populateUniversitiesComboBox();
@@ -206,8 +208,10 @@ void MainWindow::populateProgramTable(){
     QStringList whereQueries;
     QStringList kontenjanQueries;
     QStringList tuitionQueries;
+    QStringList gradeIntervalQueries;
     QString kontenjanSubQuery = "";
     QString tuitionSubQuery = "";
+    QString gradeIntervalSubQuery = "";
     QList<QPair<int, QString>> universities;
 
     QString sqlQuery = "Select * FROM ";
@@ -248,6 +252,91 @@ void MainWindow::populateProgramTable(){
     }
     else if(ui->comboBoxUniversityType->currentIndex() == 2) { //Vakıf
         whereQueries.append("DevletUniversitesi = 0");
+    }
+
+    double enKucukPuan = ui->doubleSpinBoxEnKucukPuan->value();
+    double enBuyukPuan = ui->doubleSpinBoxEnBuyukPuan->value();
+
+    QString genelPuanAraligiQuery = "";
+    if(ui->checkBoxGenel->isChecked() || ui->checkBoxKKTCUyruklu->isChecked() || ui->checkBoxMTOK->isChecked()) {
+        if(enKucukPuan > 100) {
+            genelPuanAraligiQuery = "GenelEnKucukPuan > " + QString::number(enKucukPuan);
+        }
+        if(enBuyukPuan < 560) {
+            if(!genelPuanAraligiQuery.isEmpty())
+                genelPuanAraligiQuery += " AND ";
+            genelPuanAraligiQuery += "GenelEnKucukPuan < " + QString::number(enBuyukPuan);
+        }
+        if(!genelPuanAraligiQuery.isEmpty())
+            gradeIntervalQueries.append(genelPuanAraligiQuery);
+    }
+
+    QString okulBirincisiPuanAraligiQuery = "";
+    if(ui->checkBoxOkulBirincisi->isChecked()) {
+        if(enKucukPuan > 100) {
+            okulBirincisiPuanAraligiQuery = "OkulBirincisiEnKucukPuan > " + QString::number(enKucukPuan);
+        }
+        if(enBuyukPuan < 560) {
+            if(!okulBirincisiPuanAraligiQuery.isEmpty())
+                okulBirincisiPuanAraligiQuery += " AND ";
+            okulBirincisiPuanAraligiQuery += "OkulBirincisiEnKucukPuan < " + QString::number(enBuyukPuan);
+        }
+        if(!okulBirincisiPuanAraligiQuery.isEmpty())
+            gradeIntervalQueries.append(okulBirincisiPuanAraligiQuery);
+    }
+
+    QString sehitGaziPuanAraligiQuery = "";
+    if(ui->checkBoxSehitGaziYakini->isChecked()) {
+        if(enKucukPuan > 100) {
+            sehitGaziPuanAraligiQuery = "SehitGaziEnKucukPuan > " + QString::number(enKucukPuan);
+        }
+        if(enBuyukPuan < 560) {
+            if(!sehitGaziPuanAraligiQuery.isEmpty())
+                sehitGaziPuanAraligiQuery += " AND ";
+            sehitGaziPuanAraligiQuery += "SehitGaziEnKucukPuan < " + QString::number(enBuyukPuan);
+        }
+        if(!sehitGaziPuanAraligiQuery.isEmpty())
+            gradeIntervalQueries.append(sehitGaziPuanAraligiQuery);
+    }
+
+    QString depremzedePuanAraligiQuery = "";
+    if(ui->checkBoxDepremzede->isChecked()) {
+        if(enKucukPuan > 100) {
+            depremzedePuanAraligiQuery = "DepremzedeEnKucukPuan > " + QString::number(enKucukPuan);
+        }
+        if(enBuyukPuan < 560) {
+            if(!depremzedePuanAraligiQuery.isEmpty())
+                depremzedePuanAraligiQuery += " AND ";
+            depremzedePuanAraligiQuery += "DepremzedeEnKucukPuan < " + QString::number(enBuyukPuan);
+        }
+        if(!depremzedePuanAraligiQuery.isEmpty())
+            gradeIntervalQueries.append(depremzedePuanAraligiQuery);
+    }
+
+    QString kadin34PuanAraligiQuery = "";
+    if(ui->checkBoxKadin34->isChecked()) {
+        if(enKucukPuan > 100) {
+            kadin34PuanAraligiQuery = "Kadin34EnKucukPuan > " + QString::number(enKucukPuan);
+        }
+        if(enBuyukPuan < 560) {
+            if(!kadin34PuanAraligiQuery.isEmpty())
+                kadin34PuanAraligiQuery += " AND ";
+            kadin34PuanAraligiQuery += "Kadin34EnKucukPuan < " + QString::number(enBuyukPuan);
+        }
+        if(!kadin34PuanAraligiQuery.isEmpty())
+            gradeIntervalQueries.append(kadin34PuanAraligiQuery);
+    }
+
+    if(!gradeIntervalQueries.isEmpty()) {
+        gradeIntervalSubQuery += "(" + gradeIntervalQueries[0];
+        for(int i = 1; i < gradeIntervalQueries.size(); i++) {
+            gradeIntervalSubQuery += " OR " + gradeIntervalQueries[i];
+        }
+        gradeIntervalSubQuery += ")";
+    }
+
+    if(!gradeIntervalSubQuery.isEmpty()) {
+        whereQueries.append(gradeIntervalSubQuery);
     }
 
     if (ui->checkBoxGenel->isChecked()) {
@@ -321,6 +410,8 @@ void MainWindow::populateProgramTable(){
 
     if(kontenjanSubQuery.isEmpty() || tuitionSubQuery.isEmpty()) {
         ui->tableWidgetPrograms->setRowCount(0);
+        ui->tableWidgetPrograms->setUpdatesEnabled(true);
+        ui->tableWidgetPrograms->setSortingEnabled(true);
         return;
     }
 
@@ -674,6 +765,25 @@ void MainWindow::on_comboBoxTercihTuru_currentIndexChanged(int index)
         tercihTuru = TercihTuru::NormalTercih;
     else
         tercihTuru = TercihTuru::EkTercih;
+    populateProgramTable();
+}
+
+
+void MainWindow::on_pushButtonClearPuanAraligi_clicked()
+{
+    ui->doubleSpinBoxEnKucukPuan->setValue(100.0);
+    ui->doubleSpinBoxEnBuyukPuan->setValue(560.0);
+}
+
+
+void MainWindow::on_doubleSpinBoxEnKucukPuan_valueChanged(double arg1)
+{
+    populateProgramTable();
+}
+
+
+void MainWindow::on_doubleSpinBoxEnBuyukPuan_valueChanged(double arg1)
+{
     populateProgramTable();
 }
 
