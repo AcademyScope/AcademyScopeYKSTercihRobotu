@@ -94,7 +94,7 @@ private:
     void initializeYKSTableColumnNames();
     QString getDbColumnNameFromProgramTableColumnIndex(int columnIndex);
 
-    QTableWidgetItem* createTableWidgetItem(const QString &text, int alignment = Qt::AlignLeft | Qt::AlignVCenter);
+    QTableWidgetItem* createTableWidgetItem(const QString &text, const Qt::Alignment &alignment = Qt::AlignLeft | Qt::AlignVCenter);
 
     QLocale turkishLocale;
     int lastSortCol = -1;

@@ -681,7 +681,7 @@ QString MainWindow::getDbColumnNameFromProgramTableColumnIndex(int columnIndex) 
 
 }
 
-QTableWidgetItem *MainWindow::createTableWidgetItem(const QString &text, int alignment)
+QTableWidgetItem *MainWindow::createTableWidgetItem(const QString &text, const Qt::Alignment &alignment)
 {
     QTableWidgetItem *item = new QTableWidgetItem(text);
     item->setTextAlignment(alignment);
