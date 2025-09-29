@@ -1,5 +1,5 @@
 /*
-TurkishFilterProxy class declarations of AcademyScope
+StringUtil class declarations of AcademyScope
 Copyright (C) 2025 Volkan Orhan
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -10,29 +10,14 @@ You should have received a copy of the GNU General Public License along with thi
 */
 #pragma once
 
-#include <QSortFilterProxyModel>
-#include <QCollator>
+#include <QString>
 #include <QLocale>
-#include <QCompleter>
-#include <QComboBox>
-#include <QObject>
 
-class TurkishFilterProxy : public QSortFilterProxyModel {
-    Q_OBJECT
+class StringUtil
+{
 public:
-    explicit TurkishFilterProxy(QObject *parent=nullptr);
-
-    void setNeedle(const QString &s);
-
-protected:
-    // contains eşleşmesi (ı/I, i/İ doğru çalışır)
-    bool filterAcceptsRow(int row, const QModelIndex &parent) const override;
-
-    // Türkçe sıralama
-    bool lessThan(const QModelIndex &l, const QModelIndex &r) const override;
-
+    static QString toTurkishTitleCase(const QString &input);
+    static QString toTurkishUpperCase(const QString &input);
 private:
-    QLocale turkishLocale;
-    QCollator collator;
-    QString needle;
+    static QLocale turkishLocale;
 };

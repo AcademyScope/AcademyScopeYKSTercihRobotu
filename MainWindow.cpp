@@ -26,6 +26,7 @@ You should have received a copy of the GNU General Public License along with thi
 #include <QDir>
 #include <QtGlobal>
 #include "SQLiteUtil.hpp"
+#include "StringUtil.hpp"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -221,11 +222,11 @@ void MainWindow::populateProgramTable(){
         sqlQuery += "EkTercihDetayli";
 
     if(universityName.trimmed() != "") {
-        whereQueries.append("UniversiteAdi LIKE \"%" + universityName + "%\"");
+        whereQueries.append("UniversiteAdi LIKE \"%" + StringUtil::toTurkishUpperCase(universityName) + "%\"");
     }
 
     if(department.trimmed() != "") {
-        whereQueries.append("ProgramAdi LIKE \"%" + department + "%\"");
+        whereQueries.append("ProgramAdi LIKE \"%" + StringUtil::toTurkishTitleCase(department) + "%\"");
     }
 
     int ulkeIndex = ui->comboBoxUlke->currentIndex();

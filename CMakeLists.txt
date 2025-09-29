@@ -23,16 +23,15 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets Sql)
 
 set(PROJECT_SOURCES
         main.cpp
-        MainWindow.cpp
-        MainWindow.hpp
-        MainWindow.ui
+        Resources.qrc
+        MainWindow.cpp MainWindow.hpp MainWindow.ui
+        AboutDialog.hpp AboutDialog.cpp AboutDialog.ui
         EnumDefinitions.hpp
         BackEnd.cpp
         BackEnd.hpp
         SQLiteUtil.hpp SQLiteUtil.cpp
+        StringUtil.hpp StringUtil.cpp
         TurkishFilterProxy.hpp TurkishFilterProxy.cpp
-        AboutDialog.hpp AboutDialog.cpp AboutDialog.ui
-        Resources.qrc
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

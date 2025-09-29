@@ -12,7 +12,7 @@ You should have received a copy of the GNU General Public License along with thi
 
 TurkishFilterProxy::TurkishFilterProxy(QObject *parent)
         : QSortFilterProxyModel(parent),
-        turkish(QLocale::Turkish, QLocale::Turkey),
+        turkishLocale(QLocale::Turkish, QLocale::Turkey),
         collator(QLocale(QLocale::Turkish, QLocale::Turkey))
     {
         collator.setCaseSensitivity(Qt::CaseInsensitive);
@@ -20,12 +20,12 @@ TurkishFilterProxy::TurkishFilterProxy(QObject *parent)
     }
 
 void TurkishFilterProxy::setNeedle(const QString &s) {
-    needle = turkish.toLower(s);
+    needle = turkishLocale.toLower(s);
     invalidateFilter();
 }
 
 bool TurkishFilterProxy::filterAcceptsRow(int row, const QModelIndex &parent) const {
-        const QString hay = turkish.toLower(sourceModel()->index(row, 0, parent).data().toString());
+        const QString hay = turkishLocale.toLower(sourceModel()->index(row, 0, parent).data().toString());
         return needle.isEmpty() || hay.contains(needle);
     }
 
