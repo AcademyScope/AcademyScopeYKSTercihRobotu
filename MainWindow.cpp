@@ -187,10 +187,16 @@ void MainWindow::populateDepartmentsComboBox() {
 
 
 void MainWindow::populateProgramTable(){
+    ui->tableWidgetPrograms->clearContents();
+    ui->tableWidgetPrograms->setRowCount(0);
+
     if (!db.isOpen())
         return;
 
     hideUnnecessaryColumnsOnTheProgramTable();
+
+    ui->tableWidgetPrograms->setUpdatesEnabled(false);
+    ui->tableWidgetPrograms->setSortingEnabled(false);
 
     QString universityName = ui->comboBoxUniversity->currentText();
     QString department = ui->comboBoxDepartment->currentText();
@@ -338,9 +344,6 @@ void MainWindow::populateProgramTable(){
     }
 
     if (query.exec(sqlQuery)) {
-        ui->tableWidgetPrograms->clearContents();
-        ui->tableWidgetPrograms->setRowCount(0);
-
         int row = 0;
         while (query.next()) {
             ui->tableWidgetPrograms->insertRow(row);
@@ -407,6 +410,9 @@ void MainWindow::populateProgramTable(){
             row++;
         }
     }
+
+    ui->tableWidgetPrograms->setUpdatesEnabled(true);
+    ui->tableWidgetPrograms->setSortingEnabled(true);
 
     return;
 }
