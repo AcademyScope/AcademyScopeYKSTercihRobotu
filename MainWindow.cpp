@@ -591,11 +591,16 @@ void MainWindow::hideUnnecessaryColumnsOnTheProgramTable() {
 
     //Ek kontenjanda yok
     if(tercihTuru == TercihTuru::NormalTercih) {
-        ui->tableWidgetPrograms->showColumn((int) ProgramTableColumns::GenelYerlesen);
-        ui->tableWidgetPrograms->showColumn((int) ProgramTableColumns::OkulBirincisiYerlesen);
-        ui->tableWidgetPrograms->showColumn((int) ProgramTableColumns::SehitGaziYakiniYerlesen);
-        ui->tableWidgetPrograms->showColumn((int) ProgramTableColumns::DepremzedeYerlesen);
-        ui->tableWidgetPrograms->showColumn((int) ProgramTableColumns::Kadin34PlusYerlesen);
+        if(ui->checkBoxGenel->isChecked())
+            ui->tableWidgetPrograms->showColumn((int) ProgramTableColumns::GenelYerlesen);
+        if(ui->checkBoxOkulBirincisi->isChecked())
+            ui->tableWidgetPrograms->showColumn((int) ProgramTableColumns::OkulBirincisiYerlesen);
+        if(ui->checkBoxSehitGaziYakini->isChecked())
+            ui->tableWidgetPrograms->showColumn((int) ProgramTableColumns::SehitGaziYakiniYerlesen);
+        if(ui->checkBoxDepremzede->isChecked())
+            ui->tableWidgetPrograms->showColumn((int) ProgramTableColumns::DepremzedeYerlesen);
+        if(ui->checkBoxKadin34->isChecked())
+            ui->tableWidgetPrograms->showColumn((int) ProgramTableColumns::Kadin34PlusYerlesen);
     }
     else {
         ui->tableWidgetPrograms->hideColumn((int) ProgramTableColumns::GenelYerlesen);
