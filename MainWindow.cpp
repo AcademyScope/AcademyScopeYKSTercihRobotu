@@ -493,33 +493,33 @@ void MainWindow::populateProgramTable(){
                 QString genelYerlesen = query.value("GenelYerlesen").toString();
                 QString generalMaximumPoints = query.value("GenelEnBuyukPuan").toString();
 
-                ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::GenelYerlesen, new QTableWidgetItem(genelYerlesen));
-                ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::OkulBirincisiYerlesen, new QTableWidgetItem(okulBirincisiYerlesen));
-                ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::SehitGaziYakiniYerlesen, new QTableWidgetItem(sehitGaziYerlesen));
-                ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::DepremzedeYerlesen, new QTableWidgetItem(depremzedeYerlesen));
-                ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::Kadin34PlusYerlesen, new QTableWidgetItem(kadin34Yerlesen));
+                ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::GenelYerlesen, createTableWidgetItem(genelYerlesen, Qt::AlignHCenter));
+                ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::OkulBirincisiYerlesen, createTableWidgetItem(okulBirincisiYerlesen, Qt::AlignHCenter));
+                ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::SehitGaziYakiniYerlesen, createTableWidgetItem(sehitGaziYerlesen, Qt::AlignHCenter));
+                ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::DepremzedeYerlesen, createTableWidgetItem(depremzedeYerlesen, Qt::AlignHCenter));
+                ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::Kadin34PlusYerlesen, createTableWidgetItem(kadin34Yerlesen, Qt::AlignHCenter));
 
-                ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::OkulBirincisiKontenjan, new QTableWidgetItem(okulBirincisiKontenjan));
-                ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::OkulBirincisiEnKucukPuan, new QTableWidgetItem(okulBirincisiEnKucukPuan));
+                ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::OkulBirincisiKontenjan, createTableWidgetItem(okulBirincisiKontenjan, Qt::AlignHCenter));
+                ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::OkulBirincisiEnKucukPuan, createTableWidgetItem(okulBirincisiEnKucukPuan, Qt::AlignLeft));
             }
 
-            ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::ProgramKodu, new QTableWidgetItem(QString::number(id)));
-            ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::Universite, new QTableWidgetItem(universityName));
-            ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::Kampus, new QTableWidgetItem(facultyName));
-            ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::Program, new QTableWidgetItem(programAdi));
-            ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::PuanTuru, new QTableWidgetItem(puanTuru));
+            ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::ProgramKodu, createTableWidgetItem(QString::number(id), Qt::AlignLeft));
+            ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::Universite, createTableWidgetItem(universityName, Qt::AlignLeft));
+            ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::Kampus, createTableWidgetItem(facultyName, Qt::AlignLeft));
+            ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::Program, createTableWidgetItem(programAdi, Qt::AlignLeft));
+            ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::PuanTuru, createTableWidgetItem(puanTuru, Qt::AlignHCenter));
 
-            ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::GenelKontenjan, new QTableWidgetItem(genelKontenjan));
-            ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::GenelEnKucukPuan, new QTableWidgetItem(generalMinimumPoints));
+            ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::GenelKontenjan, createTableWidgetItem(genelKontenjan, Qt::AlignHCenter));
+            ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::GenelEnKucukPuan, createTableWidgetItem(generalMinimumPoints, Qt::AlignLeft));
 
-            ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::SehitGaziYakiniKontenjan, new QTableWidgetItem(sehitGaziKontenjan));
-            ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::SehitGaziYakiniEnKucukPuan, new QTableWidgetItem(sehitGaziEnKucukPuan));
+            ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::SehitGaziYakiniKontenjan, createTableWidgetItem(sehitGaziKontenjan, Qt::AlignHCenter));
+            ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::SehitGaziYakiniEnKucukPuan, createTableWidgetItem(sehitGaziEnKucukPuan, Qt::AlignLeft));
 
-            ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::DepremzedeKontenjan, new QTableWidgetItem(depremzedeKontenjan));
-            ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::DepremzedeEnKucukPuan, new QTableWidgetItem(depremzedeEnKucukPuan));
+            ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::DepremzedeKontenjan, createTableWidgetItem(depremzedeKontenjan, Qt::AlignHCenter));
+            ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::DepremzedeEnKucukPuan, createTableWidgetItem(depremzedeEnKucukPuan, Qt::AlignLeft));
 
-            ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::Kadin34PlusKontenjan, new QTableWidgetItem(kadin34Kontenjan));
-            ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::Kadin34PlusEnKucukPuan, new QTableWidgetItem(kadin34EnKucukPuan));
+            ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::Kadin34PlusKontenjan, createTableWidgetItem(kadin34Kontenjan, Qt::AlignHCenter));
+            ui->tableWidgetPrograms->setItem(row, (int) ProgramTableColumns::Kadin34PlusEnKucukPuan, createTableWidgetItem(kadin34EnKucukPuan, Qt::AlignLeft));
 
             row++;
         }
@@ -678,6 +678,13 @@ QString MainWindow::getDbColumnNameFromProgramTableColumnIndex(int columnIndex) 
     default: return QString();
     }
 
+}
+
+QTableWidgetItem *MainWindow::createTableWidgetItem(const QString &text, int alignment)
+{
+    QTableWidgetItem *item = new QTableWidgetItem(text);
+    item->setTextAlignment(alignment);
+    return item;
 }
 
 void MainWindow::on_checkBoxGenel_toggled(bool checked)

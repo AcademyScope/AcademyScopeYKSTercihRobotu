@@ -15,6 +15,7 @@ You should have received a copy of the GNU General Public License along with thi
 #include <QSqlDatabase>
 #include "EnumDefinitions.hpp"
 #include <QHeaderView>
+#include <QTableWidgetItem>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -92,6 +93,8 @@ private:
     void hideUnusedColumnsOnTheProgramTable();
     void initializeYKSTableColumnNames();
     QString getDbColumnNameFromProgramTableColumnIndex(int columnIndex);
+
+    QTableWidgetItem* createTableWidgetItem(const QString &text, int alignment = Qt::AlignLeft | Qt::AlignVCenter);
 
     QLocale turkishLocale;
     int lastSortCol = -1;

@@ -98,7 +98,7 @@
     </font>
    </property>
    <property name="text">
-    <string>Sürüm 1.0 Beta 1</string>
+    <string>Sürüm 1.0 Beta 3</string>
    </property>
   </widget>
   <widget class="QLabel" name="labelMailAddress">
