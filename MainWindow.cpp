@@ -254,6 +254,25 @@ void MainWindow::populateProgramTable(){
         whereQueries.append("DevletUniversitesi = 0");
     }
 
+    int puanTuruIndex = ui->comboBoxPuanTuru->currentIndex();
+    switch(puanTuruIndex) {
+    case 1:
+        whereQueries.append("PuanTuru = \"SAY\"");
+        break;
+    case 2:
+        whereQueries.append("PuanTuru = \"EA\"");
+        break;
+    case 3:
+        whereQueries.append("PuanTuru = \"SÖZ\"");
+        break;
+    case 4:
+        whereQueries.append("PuanTuru = \"TYT\"");
+        break;
+    case 5:
+        whereQueries.append("PuanTuru = \"DİL\"");
+        break;
+    }
+
     double enKucukPuan = ui->doubleSpinBoxEnKucukPuan->value();
     double enBuyukPuan = ui->doubleSpinBoxEnBuyukPuan->value();
 
@@ -787,6 +806,12 @@ void MainWindow::on_doubleSpinBoxEnKucukPuan_valueChanged(double arg1)
 
 
 void MainWindow::on_doubleSpinBoxEnBuyukPuan_valueChanged(double arg1)
+{
+    populateProgramTable();
+}
+
+
+void MainWindow::on_comboBoxPuanTuru_currentIndexChanged(int index)
 {
     populateProgramTable();
 }

@@ -79,6 +79,8 @@ private slots:
 
     void on_doubleSpinBoxEnBuyukPuan_valueChanged(double arg1);
 
+    void on_comboBoxPuanTuru_currentIndexChanged(int index);
+
 private:
     Ui::MainWindow *ui;
     void initDB();
