@@ -6,11 +6,10 @@
     {
       "layers" : [
         {
-          "blend-mode" : "normal",
           "fill" : {
             "linear-gradient" : [
-              "display-p3:0.28232,0.92822,1.00000,1.00000",
-              "display-p3:0.03804,0.55460,1.00000,1.00000"
+              "display-p3:0.82419,0.92451,1.00000,1.00000",
+              "display-p3:0.57288,0.80306,1.00000,1.00000"
             ]
           },
           "glass" : false,
@@ -19,7 +18,7 @@
           "position" : {
             "scale" : 2,
             "translation-in-points" : [
-              12,
+              0,
               0
             ]
           }
