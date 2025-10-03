@@ -3,5 +3,6 @@
         <file>Resources/Images/AcademyScope.png</file>
         <file>Resources/Images/SinavCraft.jpg</file>
         <file>Resources/Fonts/Inter.ttf</file>
+        <file>Resources/Images/AcademyScopeDarkMode.png</file>
     </qresource>
 </RCC>

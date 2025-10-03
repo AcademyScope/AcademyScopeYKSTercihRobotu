@@ -27,6 +27,7 @@ You should have received a copy of the GNU General Public License along with thi
 #include <QtGlobal>
 #include "SQLiteUtil.hpp"
 #include "StringUtil.hpp"
+#include <QPalette>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -34,6 +35,7 @@ MainWindow::MainWindow(QWidget *parent)
     , turkishLocale(QLocale::Turkish, QLocale::Turkey)
 {
     ui->setupUi(this);
+    setLogoDarkMode(isDarkMode());
     ui->doubleSpinBoxEnKucukPuan->setButtonSymbols(QAbstractSpinBox::NoButtons);
     ui->doubleSpinBoxEnBuyukPuan->setButtonSymbols(QAbstractSpinBox::NoButtons);
     setProgramTableColumnWidths();
@@ -78,6 +80,25 @@ MainWindow::MainWindow(QWidget *parent)
     programTableHorizontalHeader->setSortIndicatorShown(true);
     connect(programTableHorizontalHeader, &QHeaderView::sectionClicked, this, &MainWindow::onProgramTableHeaderItemClicked);
 }
+
+
+bool MainWindow::isDarkMode() {
+    QPalette palette = qApp->palette();
+    QColor bg = palette.color(QPalette::Window);
+
+    int brightness = (bg.red() * 299 + bg.green() * 587 + bg.blue() * 114) / 1000;
+    return brightness < 128;
+}
+
+bool MainWindow::event(QEvent *e) {
+    if (e->type() == QEvent::ApplicationPaletteChange ||
+        e->type() == QEvent::ThemeChange) {
+        setLogoDarkMode(isDarkMode());
+        //qDebug() << "Theme changed. Dark mode?" << isDarkMode();
+    }
+    return QWidget::event(e);
+}
+
 
 void MainWindow::onProgramTableHeaderItemClicked(int logicalIndex) {
     qDebug()<<"item clicked " << getDbColumnNameFromProgramTableColumnIndex(logicalIndex);
@@ -652,6 +673,16 @@ void MainWindow::initializeYKSTableColumnNames()
         "Lisans",
         "UlkeKodu"
     };
+}
+
+void MainWindow::setLogoDarkMode(bool isDarkMode)
+{
+    if(isDarkMode) {
+        ui->logo->setStyleSheet("image: url(:/Resources/Images/AcademyScopeDarkMode.png);");
+    }
+    else {
+        ui->logo->setStyleSheet("image: url(:/Resources/Images/AcademyScope.png);");
+    }
 }
 
 QString MainWindow::getDbColumnNameFromProgramTableColumnIndex(int columnIndex) {
