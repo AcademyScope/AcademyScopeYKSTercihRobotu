@@ -15,6 +15,7 @@ You should have received a copy of the GNU General Public License along with thi
 #include <QUrl>
 #include <QPushButton>
 #include <QObject>
+#include "Utils/DarkModeUtil.hpp"
 
 AboutDialog::AboutDialog(QWidget *parent)
     : QDialog(parent)
@@ -29,6 +30,24 @@ AboutDialog::AboutDialog(QWidget *parent)
     ui->labelName->setFont(*InterFont);
     ui->labelSinavCraft->setFont(*InterFont);
     ui->labelTitle->setFont(*InterFontTitle);
+}
+
+bool AboutDialog::event(QEvent *e) {
+    if (e->type() == QEvent::ApplicationPaletteChange ||
+        e->type() == QEvent::ThemeChange) {
+        setLogoDarkMode(DarkModeUtil::isDarkMode());
+        //qDebug() << "Theme changed. Dark mode?" << isDarkMode();
+    }
+    return QWidget::event(e);
+}
+
+void AboutDialog::setLogoDarkMode(bool isDarkMode) {
+    if(isDarkMode) {
+        ui->logo->setStyleSheet("image: url(:/Resources/Images/AcademyScopeDarkMode.png);");
+    }
+    else {
+        ui->logo->setStyleSheet("image: url(:/Resources/Images/AcademyScope.png);");
+    }
 }
 
 AboutDialog::~AboutDialog()

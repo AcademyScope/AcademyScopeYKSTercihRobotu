@@ -31,8 +31,6 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-protected:
-    bool event(QEvent *e) override;
 private slots:
     void on_comboBoxUniversity_editTextChanged(const QString &arg1);
 
@@ -94,8 +92,8 @@ private:
     void hideUnnecessaryColumnsOnTheProgramTable();
     void hideUnusedColumnsOnTheProgramTable();
     void initializeYKSTableColumnNames();
+    bool event(QEvent *e) override;
     void setLogoDarkMode(bool isDarkMode);
-    bool isDarkMode();
     QString getDbColumnNameFromProgramTableColumnIndex(int columnIndex);
 
     QTableWidgetItem* createTableWidgetItem(const QString &text, const Qt::Alignment &alignment = Qt::AlignLeft | Qt::AlignVCenter);

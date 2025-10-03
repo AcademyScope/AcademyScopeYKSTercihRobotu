@@ -25,9 +25,9 @@ You should have received a copy of the GNU General Public License along with thi
 #include <QStandardPaths>
 #include <QDir>
 #include <QtGlobal>
-#include "SQLiteUtil.hpp"
-#include "StringUtil.hpp"
-#include <QPalette>
+#include "Utils/SQLiteUtil.hpp"
+#include "Utils/StringUtil.hpp"
+#include "Utils/DarkModeUtil.hpp"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -35,7 +35,7 @@ MainWindow::MainWindow(QWidget *parent)
     , turkishLocale(QLocale::Turkish, QLocale::Turkey)
 {
     ui->setupUi(this);
-    setLogoDarkMode(isDarkMode());
+    setLogoDarkMode(DarkModeUtil::isDarkMode());
     ui->doubleSpinBoxEnKucukPuan->setButtonSymbols(QAbstractSpinBox::NoButtons);
     ui->doubleSpinBoxEnBuyukPuan->setButtonSymbols(QAbstractSpinBox::NoButtons);
     setProgramTableColumnWidths();
@@ -81,19 +81,10 @@ MainWindow::MainWindow(QWidget *parent)
     connect(programTableHorizontalHeader, &QHeaderView::sectionClicked, this, &MainWindow::onProgramTableHeaderItemClicked);
 }
 
-
-bool MainWindow::isDarkMode() {
-    QPalette palette = qApp->palette();
-    QColor bg = palette.color(QPalette::Window);
-
-    int brightness = (bg.red() * 299 + bg.green() * 587 + bg.blue() * 114) / 1000;
-    return brightness < 128;
-}
-
 bool MainWindow::event(QEvent *e) {
     if (e->type() == QEvent::ApplicationPaletteChange ||
         e->type() == QEvent::ThemeChange) {
-        setLogoDarkMode(isDarkMode());
+        setLogoDarkMode(DarkModeUtil::isDarkMode());
         //qDebug() << "Theme changed. Dark mode?" << isDarkMode();
     }
     return QWidget::event(e);
@@ -675,8 +666,7 @@ void MainWindow::initializeYKSTableColumnNames()
     };
 }
 
-void MainWindow::setLogoDarkMode(bool isDarkMode)
-{
+void MainWindow::setLogoDarkMode(bool isDarkMode) {
     if(isDarkMode) {
         ui->logo->setStyleSheet("image: url(:/Resources/Images/AcademyScopeDarkMode.png);");
     }

@@ -29,8 +29,9 @@ set(PROJECT_SOURCES
         EnumDefinitions.hpp
         BackEnd.cpp
         BackEnd.hpp
-        SQLiteUtil.hpp SQLiteUtil.cpp
-        StringUtil.hpp StringUtil.cpp
+        Utils/SQLiteUtil.hpp Utils/SQLiteUtil.cpp
+        Utils/StringUtil.hpp Utils/StringUtil.cpp
+        Utils/DarkModeUtil.hpp Utils/DarkModeUtil.cpp
         TurkishFilterProxy.hpp TurkishFilterProxy.cpp
 )
 

@@ -1,5 +1,5 @@
 /*
-AboutDialog class declarations of AcademyScope
+DarkModeUtil class definitions of AcademyScope
 Copyright (C) 2025 Volkan Orhan
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -8,34 +8,14 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 
 You should have received a copy of the GNU General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
-#pragma once
+#include "DarkModeUtil.hpp"
+#include <QPalette>
+#include <QApplication>
 
-#include <QDialog>
-#include <QAbstractButton>
+bool DarkModeUtil::isDarkMode() {
+    QPalette palette = qApp->palette();
+    QColor bg = palette.color(QPalette::Window);
 
-namespace Ui {
-class AboutDialog;
+    int brightness = (bg.red() * 299 + bg.green() * 587 + bg.blue() * 114) / 1000;
+    return brightness < 128;
 }
-
-class AboutDialog : public QDialog
-{
-    Q_OBJECT
-
-public:
-    explicit AboutDialog(QWidget *parent = nullptr);
-    ~AboutDialog();
-
-protected:
-private slots:
-    void on_buttonSinavCraft_clicked(QAbstractButton *button);
-
-    void on_pushButton_clicked();
-
-private:
-    Ui::AboutDialog *ui;
-    QFont *InterFont;
-    QFont *InterFontTitle;
-
-    bool event(QEvent *e) override;
-    void setLogoDarkMode(bool isDarkMode);
-};
