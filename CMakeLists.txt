@@ -75,7 +75,21 @@ set_target_properties(AcademyScope PROPERTIES
 )
 
 ####################
+# macOS Liquid Glass Icon Support
+#
+# Copy Assets.car to Resources
+set(ASSET_CAR ${CMAKE_SOURCE_DIR}/Resources/Icons/Assets.car)
+set_source_files_properties(${ASSET_CAR} PROPERTIES
+    MACOSX_PACKAGE_LOCATION "Resources")
+target_sources(AcademyScope PRIVATE ${ASSET_CAR})
 
+# Use custom Info.plist
+set_target_properties(AcademyScope PROPERTIES
+    MACOSX_BUNDLE_INFO_PLIST ${CMAKE_SOURCE_DIR}/macOS/Info.plist)
+
+####################
+# SQLite Support
+#
 # Copy YKS.sqlite only for non-Debug builds
 # Ensure your source file name matches exactly (case-sensitive on Linux):
 #   ${CMAKE_SOURCE_DIR}/Databases/YKS.sqlite
