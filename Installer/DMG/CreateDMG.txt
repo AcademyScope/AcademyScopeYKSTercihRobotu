@@ -1,0 +1,30 @@
+macOS Icon Generation:
+mkdir InstallerDiskIcon.iconset
+sips -z 16 16   InstallerDiskIcon.png --out InstallerDiskIcon.iconset/icon_16x16.png
+sips -z 32 32   InstallerDiskIcon.png --out InstallerDiskIcon.iconset/icon_16x16@2x.png
+sips -z 32 32   InstallerDiskIcon.png --out InstallerDiskIcon.iconset/icon_32x32.png
+sips -z 64 64   InstallerDiskIcon.png --out InstallerDiskIcon.iconset/icon_32x32@2x.png
+sips -z 128 128 InstallerDiskIcon.png --out InstallerDiskIcon.iconset/icon_128x128.png
+sips -z 256 256 InstallerDiskIcon.png --out InstallerDiskIcon.iconset/icon_128x128@2x.png
+sips -z 256 256 InstallerDiskIcon.png --out InstallerDiskIcon.iconset/icon_256x256.png
+sips -z 512 512 InstallerDiskIcon.png --out InstallerDiskIcon.iconset/icon_256x256@2x.png
+sips -z 512 512 InstallerDiskIcon.png --out InstallerDiskIcon.iconset/icon_512x512.png
+sips -z 1024 1024 InstallerDiskIcon.png --out InstallerDiskIcon.iconset/icon_512x512@2x.png
+sips -z 1024 1024 InstallerDiskIcon.png --out InstallerDiskIcon.iconset/icon_1024x1024.png
+sips -z 2028 2048 InstallerDiskIcon.png --out InstallerDiskIcon.iconset/icon_1024x1024@2x.png
+iconutil -c icns InstallerDiskIcon.iconset
+
+brew install create-dmg
+create-dmg \
+              --volname "AcademyScope Installer" \
+              --volicon InstallerDiskIcon.icns \
+              --background InstallerBackground.png \
+              --window-pos 200 120 \
+              --window-size 600 420 \
+              --icon-size 128 \
+              --icon "AcademyScope.app" 148 185 \
+              --hide-extension "AcademyScope.app" \
+              --app-drop-link 455 184 \
+              "AcademyScope for macOS.dmg" \
+              ./AcademyScope.app
+
