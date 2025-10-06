@@ -1123,6 +1123,35 @@
    </property>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>comboBoxUniversity</tabstop>
+  <tabstop>comboBoxDepartment</tabstop>
+  <tabstop>comboBoxLicenseType</tabstop>
+  <tabstop>comboBoxTercihTuru</tabstop>
+  <tabstop>comboBoxUlke</tabstop>
+  <tabstop>comboBoxUniversityType</tabstop>
+  <tabstop>comboBoxPuanTuru</tabstop>
+  <tabstop>doubleSpinBoxEnKucukPuan</tabstop>
+  <tabstop>doubleSpinBoxEnBuyukPuan</tabstop>
+  <tabstop>checkBoxGenel</tabstop>
+  <tabstop>checkBoxSehitGaziYakini</tabstop>
+  <tabstop>checkBoxOkulBirincisi</tabstop>
+  <tabstop>checkBoxKKTCUyruklu</tabstop>
+  <tabstop>checkBoxDepremzede</tabstop>
+  <tabstop>checkBoxMTOK</tabstop>
+  <tabstop>checkBoxKadin34</tabstop>
+  <tabstop>checkBoxUcretsiz</tabstop>
+  <tabstop>checkBoxIndirimli</tabstop>
+  <tabstop>checkBoxUcretli</tabstop>
+  <tabstop>pushButtonAbout</tabstop>
+  <tabstop>pushButtonClearPuanAraligi</tabstop>
+  <tabstop>pushButtonClearUniversityComboBox</tabstop>
+  <tabstop>pushButtonSettings_2</tabstop>
+  <tabstop>pushButtonSettings</tabstop>
+  <tabstop>pushButtonClearDepartmentComboBox</tabstop>
+  <tabstop>pushButtonMenu</tabstop>
+  <tabstop>tableWidgetPrograms</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
