@@ -181,7 +181,18 @@ void MainWindow::populateDepartmentsComboBox() {
     QSqlQuery query;
     QList<QString> departments;
 
-    if (query.exec("SELECT Distinct ProgramAdi FROM YKS")) {
+    QString selectionQuery = "SELECT DISTINCT\n\
+        TRIM(\n\
+            CASE\n\
+                WHEN instr(ProgramAdi, '(') > 0\n\
+            THEN substr(ProgramAdi, 1, instr(ProgramAdi, '(') - 1)\n\
+            ELSE ProgramAdi\n\
+                END\n\
+            ) AS AnaProgramAdi\n\
+            FROM YKS;\
+           ";
+
+    if (query.exec(selectionQuery)) {
         while (query.next()) {
             QString department = query.value(0).toString();
             departments.append(department);
