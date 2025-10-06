@@ -1,0 +1,3 @@
+[submodule "Components/BackEnd"]
+	path = Components/BackEnd
+	url = https://github.com/AcademyScope/AcademyScopeBackEnd.git
