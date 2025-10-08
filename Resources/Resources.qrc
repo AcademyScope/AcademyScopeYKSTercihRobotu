@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Images/AcademyScope.png</file>
+        <file>Images/SinavCraft.jpg</file>
+        <file>Fonts/Inter.ttf</file>
+        <file>Images/AcademyScopeDarkMode.png</file>
+    </qresource>
+</RCC>

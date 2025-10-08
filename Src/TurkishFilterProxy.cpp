@@ -13,11 +13,10 @@ You should have received a copy of the GNU General Public License along with thi
 TurkishFilterProxy::TurkishFilterProxy(QObject *parent)
         : QSortFilterProxyModel(parent),
         turkishLocale(QLocale::Turkish, QLocale::Turkey),
-        collator(QLocale(QLocale::Turkish, QLocale::Turkey))
-    {
+        collator(QLocale(QLocale::Turkish, QLocale::Turkey)) {
         collator.setCaseSensitivity(Qt::CaseInsensitive);
         setDynamicSortFilter(true);
-    }
+}
 
 void TurkishFilterProxy::setNeedle(const QString &s) {
     needle = turkishLocale.toLower(s);

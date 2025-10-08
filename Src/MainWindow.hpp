@@ -88,7 +88,6 @@ private:
     void setProgramTableColumnWidths();
     void populateUniversitiesComboBox();
     void populateDepartmentsComboBox();
-    void populateProgramTable();
     void hideUnnecessaryColumnsOnTheProgramTable();
     void hideUnusedColumnsOnTheProgramTable();
     void initializeYKSTableColumnNames();
