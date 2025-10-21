@@ -35,11 +35,11 @@ MainWindow::MainWindow(QWidget *parent)
     , turkishLocale(QLocale::Turkish, QLocale::Turkey)
 {
     ui->setupUi(this);
+    backEnd = new AcademyScopeBackEnd(ui->tableWidgetPrograms);
     setLogoDarkMode(DarkModeUtil::isDarkMode());
     ui->doubleSpinBoxEnKucukPuan->setButtonSymbols(QAbstractSpinBox::NoButtons);
     ui->doubleSpinBoxEnBuyukPuan->setButtonSymbols(QAbstractSpinBox::NoButtons);
     setProgramTableColumnWidths();
-    initDB();
     populateUniversitiesComboBox();
     populateDepartmentsComboBox();
 
@@ -112,61 +112,26 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_comboBoxUniversity_editTextChanged(const QString &arg1)
 {
-    populateProgramTable();
-}
-
-void MainWindow::initDB() {
-    db = QSqlDatabase::addDatabase("QSQLITE");
-
-    QString dbPath = SQLiteUtil::resolveDatabasePath();
-
-    db.setDatabaseName(dbPath);
-
-    if (!db.open()) {
-        qDebug() << "Veritabanı açılamadı:" << db.lastError().text();
-        return;
-    }
+    backEnd->populateProgramTable(parameters);
 }
 
 void MainWindow::setProgramTableColumnWidths() {
-    ui->tableWidgetPrograms->setColumnWidth((int) ProgramTableColumn::ProgramKodu, 100);
-    ui->tableWidgetPrograms->setColumnWidth((int) ProgramTableColumn::Universite, 300);
-    ui->tableWidgetPrograms->setColumnWidth((int) ProgramTableColumn::Kampus, 170);
-    ui->tableWidgetPrograms->setColumnWidth((int) ProgramTableColumn::Program, 300);
-    ui->tableWidgetPrograms->setColumnWidth((int) ProgramTableColumn::PuanTuru, 40);
-    ui->tableWidgetPrograms->setColumnWidth((int) ProgramTableColumn::GenelKontenjan, 60);
-    ui->tableWidgetPrograms->setColumnWidth((int) ProgramTableColumn::GenelYerlesen, 60);
-    ui->tableWidgetPrograms->setColumnWidth((int) ProgramTableColumn::GenelEnKucukPuan, 100);
+    ui->tableWidgetPrograms->setColumnWidth(ProgramTableColumn::ProgramKodu, 100);
+    ui->tableWidgetPrograms->setColumnWidth(ProgramTableColumn::Universite, 300);
+    ui->tableWidgetPrograms->setColumnWidth(ProgramTableColumn::Kampus, 170);
+    ui->tableWidgetPrograms->setColumnWidth(ProgramTableColumn::Program, 300);
+    ui->tableWidgetPrograms->setColumnWidth(ProgramTableColumn::PuanTuru, 40);
+    ui->tableWidgetPrograms->setColumnWidth(ProgramTableColumn::GenelKontenjan, 60);
+    ui->tableWidgetPrograms->setColumnWidth(ProgramTableColumn::GenelYerlesen, 60);
+    ui->tableWidgetPrograms->setColumnWidth(ProgramTableColumn::GenelEnKucukPuan, 100);
 }
 
 void MainWindow::populateUniversitiesComboBox() {
     QStandardItemModel* model = qobject_cast<QStandardItemModel*>(ui->comboBoxUniversity->model());
-    /*
-    QStandardItem* firstItem = model->item(0);
-    firstItem->setFlags(firstItem->flags() & ~Qt::ItemIsEnabled);
-    firstItem->setForeground(QBrush(Qt::gray));
-    */
-    QSqlQuery query;
-    QList<QPair<int, QString>> universities;
+    QList<University> universities = backEnd->getUniversities();
 
-    if (query.exec("SELECT UniversiteID, UniversiteAdi FROM Universiteler")) {
-        while (query.next()) {
-            int id = query.value(0).toInt();
-            QString name = query.value(1).toString();
-            universities.append(qMakePair(id, name));
-        }
-    }
-
-    // Türkçe collator ile sırala
-    QCollator collator(QLocale(QLocale::Turkish, QLocale::Turkey));
-    std::sort(universities.begin(), universities.end(),
-              [&](const QPair<int, QString> &a, const QPair<int, QString> &b) {
-                  return collator.compare(a.second, b.second) < 0;
-              });
-
-    // ComboBox’a ekle
     for (auto &u : universities) {
-        ui->comboBoxUniversity->addItem(u.second, u.first);
+        ui->comboBoxUniversity->addItem(u.name, u.id);
     }
     ui->comboBoxUniversity->clearEditText();
 }
@@ -331,6 +296,10 @@ void MainWindow::initializeYKSTableColumnNames()
         "Lisans",
         "UlkeKodu"
     };
+}
+
+void MainWindow::initializeParameters() {
+
 }
 
 void MainWindow::setLogoDarkMode(bool isDarkMode) {

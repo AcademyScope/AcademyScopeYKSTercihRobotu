@@ -13,9 +13,9 @@ You should have received a copy of the GNU General Public License along with thi
 #include <QMainWindow>
 #include <QLocale>
 #include <QSqlDatabase>
-#include "EnumDefinitions.hpp"
 #include <QHeaderView>
 #include <QTableWidgetItem>
+#include <BackEnd.hpp>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -84,13 +84,15 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    void initDB();
+    AcademyScopeBackEnd *backEnd;
+    AcademyScopeParameters parameters;
     void setProgramTableColumnWidths();
     void populateUniversitiesComboBox();
     void populateDepartmentsComboBox();
     void hideUnnecessaryColumnsOnTheProgramTable();
     void hideUnusedColumnsOnTheProgramTable();
     void initializeYKSTableColumnNames();
+    void initializeParameters();
     bool event(QEvent *e) override;
     void setLogoDarkMode(bool isDarkMode);
     QString getDbColumnNameFromProgramTableColumnIndex(int columnIndex);
