@@ -291,7 +291,7 @@
      </spacer>
     </item>
     <item row="4" column="0" colspan="6">
-     <widget class="QTableWidget" name="tableWidgetPrograms">
+     <widget class="ProgramTable" name="tableWidgetPrograms">
       <property name="editTriggers">
        <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
       </property>
@@ -1123,6 +1123,13 @@
    </property>
   </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ProgramTable</class>
+   <extends>QTableWidget</extends>
+   <header location="global">ProgramTable.hpp</header>
+  </customwidget>
+ </customwidgets>
  <tabstops>
   <tabstop>comboBoxUniversity</tabstop>
   <tabstop>comboBoxDepartment</tabstop>
