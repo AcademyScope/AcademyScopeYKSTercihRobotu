@@ -157,90 +157,90 @@ void MainWindow::populateDepartmentsComboBox() {
 
 void MainWindow::hideUnnecessaryColumnsOnTheProgramTable() {
     if(ui->checkBoxGenel->isChecked() || ui->checkBoxKKTCUyruklu->isChecked() || ui->checkBoxMTOK->isChecked()) {
-        ui->tableWidgetPrograms->showColumn((int) ProgramTableColumn::GenelKontenjan);
-        ui->tableWidgetPrograms->showColumn((int) ProgramTableColumn::GenelYerlesen);
-        ui->tableWidgetPrograms->showColumn((int) ProgramTableColumn::GenelEnKucukPuan);
+        ui->tableWidgetPrograms->showColumn(ProgramTableColumn::GenelKontenjan);
+        ui->tableWidgetPrograms->showColumn(ProgramTableColumn::GenelYerlesen);
+        ui->tableWidgetPrograms->showColumn(ProgramTableColumn::GenelEnKucukPuan);
     }
     else {
-        ui->tableWidgetPrograms->hideColumn((int) ProgramTableColumn::GenelKontenjan);
-        ui->tableWidgetPrograms->hideColumn((int) ProgramTableColumn::GenelYerlesen);
-        ui->tableWidgetPrograms->hideColumn((int) ProgramTableColumn::GenelEnKucukPuan);
+        ui->tableWidgetPrograms->hideColumn(ProgramTableColumn::GenelKontenjan);
+        ui->tableWidgetPrograms->hideColumn(ProgramTableColumn::GenelYerlesen);
+        ui->tableWidgetPrograms->hideColumn(ProgramTableColumn::GenelEnKucukPuan);
     }
 
     if(ui->checkBoxOkulBirincisi->isChecked()) {
-        ui->tableWidgetPrograms->showColumn((int) ProgramTableColumn::OkulBirincisiKontenjan);
-        ui->tableWidgetPrograms->showColumn((int) ProgramTableColumn::OkulBirincisiYerlesen);
-        ui->tableWidgetPrograms->showColumn((int) ProgramTableColumn::OkulBirincisiEnKucukPuan);
+        ui->tableWidgetPrograms->showColumn(ProgramTableColumn::OkulBirincisiKontenjan);
+        ui->tableWidgetPrograms->showColumn(ProgramTableColumn::OkulBirincisiYerlesen);
+        ui->tableWidgetPrograms->showColumn(ProgramTableColumn::OkulBirincisiEnKucukPuan);
     }
     else {
-        ui->tableWidgetPrograms->hideColumn((int) ProgramTableColumn::OkulBirincisiKontenjan);
-        ui->tableWidgetPrograms->hideColumn((int) ProgramTableColumn::OkulBirincisiYerlesen);
-        ui->tableWidgetPrograms->hideColumn((int) ProgramTableColumn::OkulBirincisiEnKucukPuan);
+        ui->tableWidgetPrograms->hideColumn(ProgramTableColumn::OkulBirincisiKontenjan);
+        ui->tableWidgetPrograms->hideColumn(ProgramTableColumn::OkulBirincisiYerlesen);
+        ui->tableWidgetPrograms->hideColumn(ProgramTableColumn::OkulBirincisiEnKucukPuan);
     }
 
     if(ui->checkBoxSehitGaziYakini->isChecked()) {
-        ui->tableWidgetPrograms->showColumn((int) ProgramTableColumn::SehitGaziYakiniKontenjan);
-        ui->tableWidgetPrograms->showColumn((int) ProgramTableColumn::SehitGaziYakiniYerlesen);
-        ui->tableWidgetPrograms->showColumn((int) ProgramTableColumn::SehitGaziYakiniEnKucukPuan);
+        ui->tableWidgetPrograms->showColumn(ProgramTableColumn::SehitGaziYakiniKontenjan);
+        ui->tableWidgetPrograms->showColumn(ProgramTableColumn::SehitGaziYakiniYerlesen);
+        ui->tableWidgetPrograms->showColumn(ProgramTableColumn::SehitGaziYakiniEnKucukPuan);
     }
     else {
-        ui->tableWidgetPrograms->hideColumn((int) ProgramTableColumn::SehitGaziYakiniKontenjan);
-        ui->tableWidgetPrograms->hideColumn((int) ProgramTableColumn::SehitGaziYakiniYerlesen);
-        ui->tableWidgetPrograms->hideColumn((int) ProgramTableColumn::SehitGaziYakiniEnKucukPuan);
+        ui->tableWidgetPrograms->hideColumn(ProgramTableColumn::SehitGaziYakiniKontenjan);
+        ui->tableWidgetPrograms->hideColumn(ProgramTableColumn::SehitGaziYakiniYerlesen);
+        ui->tableWidgetPrograms->hideColumn(ProgramTableColumn::SehitGaziYakiniEnKucukPuan);
     }
 
 
     if(ui->checkBoxDepremzede->isChecked()) {
-        ui->tableWidgetPrograms->showColumn((int) ProgramTableColumn::DepremzedeKontenjan);
-        ui->tableWidgetPrograms->showColumn((int) ProgramTableColumn::DepremzedeYerlesen);
-        ui->tableWidgetPrograms->showColumn((int) ProgramTableColumn::DepremzedeEnKucukPuan);
+        ui->tableWidgetPrograms->showColumn(ProgramTableColumn::DepremzedeKontenjan);
+        ui->tableWidgetPrograms->showColumn(ProgramTableColumn::DepremzedeYerlesen);
+        ui->tableWidgetPrograms->showColumn(ProgramTableColumn::DepremzedeEnKucukPuan);
     }
     else {
-        ui->tableWidgetPrograms->hideColumn((int) ProgramTableColumn::DepremzedeKontenjan);
-        ui->tableWidgetPrograms->hideColumn((int) ProgramTableColumn::DepremzedeYerlesen);
-        ui->tableWidgetPrograms->hideColumn((int) ProgramTableColumn::DepremzedeEnKucukPuan);
+        ui->tableWidgetPrograms->hideColumn(ProgramTableColumn::DepremzedeKontenjan);
+        ui->tableWidgetPrograms->hideColumn(ProgramTableColumn::DepremzedeYerlesen);
+        ui->tableWidgetPrograms->hideColumn(ProgramTableColumn::DepremzedeEnKucukPuan);
     }
 
 
     if(ui->checkBoxKadin34->isChecked()) {
-        ui->tableWidgetPrograms->showColumn((int) ProgramTableColumn::Kadin34PlusKontenjan);
-        ui->tableWidgetPrograms->showColumn((int) ProgramTableColumn::Kadin34PlusYerlesen);
-        ui->tableWidgetPrograms->showColumn((int) ProgramTableColumn::Kadin34PlusEnKucukPuan);
+        ui->tableWidgetPrograms->showColumn(ProgramTableColumn::Kadin34PlusKontenjan);
+        ui->tableWidgetPrograms->showColumn(ProgramTableColumn::Kadin34PlusYerlesen);
+        ui->tableWidgetPrograms->showColumn(ProgramTableColumn::Kadin34PlusEnKucukPuan);
     }
     else {
-        ui->tableWidgetPrograms->hideColumn((int) ProgramTableColumn::Kadin34PlusKontenjan);
-        ui->tableWidgetPrograms->hideColumn((int) ProgramTableColumn::Kadin34PlusYerlesen);
-        ui->tableWidgetPrograms->hideColumn((int) ProgramTableColumn::Kadin34PlusEnKucukPuan);
+        ui->tableWidgetPrograms->hideColumn(ProgramTableColumn::Kadin34PlusKontenjan);
+        ui->tableWidgetPrograms->hideColumn(ProgramTableColumn::Kadin34PlusYerlesen);
+        ui->tableWidgetPrograms->hideColumn(ProgramTableColumn::Kadin34PlusEnKucukPuan);
     }
 
     //Ek kontenjanda yok
     if(tercihTuru == TercihTuru::NormalTercih) {
         if(ui->checkBoxGenel->isChecked())
-            ui->tableWidgetPrograms->showColumn((int) ProgramTableColumn::GenelYerlesen);
+            ui->tableWidgetPrograms->showColumn(ProgramTableColumn::GenelYerlesen);
         if(ui->checkBoxOkulBirincisi->isChecked())
-            ui->tableWidgetPrograms->showColumn((int) ProgramTableColumn::OkulBirincisiYerlesen);
+            ui->tableWidgetPrograms->showColumn(ProgramTableColumn::OkulBirincisiYerlesen);
         if(ui->checkBoxSehitGaziYakini->isChecked())
-            ui->tableWidgetPrograms->showColumn((int) ProgramTableColumn::SehitGaziYakiniYerlesen);
+            ui->tableWidgetPrograms->showColumn(ProgramTableColumn::SehitGaziYakiniYerlesen);
         if(ui->checkBoxDepremzede->isChecked())
-            ui->tableWidgetPrograms->showColumn((int) ProgramTableColumn::DepremzedeYerlesen);
+            ui->tableWidgetPrograms->showColumn(ProgramTableColumn::DepremzedeYerlesen);
         if(ui->checkBoxKadin34->isChecked())
-            ui->tableWidgetPrograms->showColumn((int) ProgramTableColumn::Kadin34PlusYerlesen);
+            ui->tableWidgetPrograms->showColumn(ProgramTableColumn::Kadin34PlusYerlesen);
     }
     else {
-        ui->tableWidgetPrograms->hideColumn((int) ProgramTableColumn::GenelYerlesen);
-        ui->tableWidgetPrograms->hideColumn((int) ProgramTableColumn::OkulBirincisiYerlesen);
-        ui->tableWidgetPrograms->hideColumn((int) ProgramTableColumn::SehitGaziYakiniYerlesen);
-        ui->tableWidgetPrograms->hideColumn((int) ProgramTableColumn::DepremzedeYerlesen);
-        ui->tableWidgetPrograms->hideColumn((int) ProgramTableColumn::Kadin34PlusYerlesen);
+        ui->tableWidgetPrograms->hideColumn(ProgramTableColumn::GenelYerlesen);
+        ui->tableWidgetPrograms->hideColumn(ProgramTableColumn::OkulBirincisiYerlesen);
+        ui->tableWidgetPrograms->hideColumn(ProgramTableColumn::SehitGaziYakiniYerlesen);
+        ui->tableWidgetPrograms->hideColumn(ProgramTableColumn::DepremzedeYerlesen);
+        ui->tableWidgetPrograms->hideColumn(ProgramTableColumn::Kadin34PlusYerlesen);
     }
 }
 
 void MainWindow::hideUnusedColumnsOnTheProgramTable() {
-    ui->tableWidgetPrograms->hideColumn((int) ProgramTableColumn::GenelBasariSirasi);
-    ui->tableWidgetPrograms->hideColumn((int) ProgramTableColumn::OkulBirincisiBasariSirasi);
-    ui->tableWidgetPrograms->hideColumn((int) ProgramTableColumn::SehitGaziYakiniBasariSirasi);
-    ui->tableWidgetPrograms->hideColumn((int) ProgramTableColumn::DepremzedeBasariSirasi);
-    ui->tableWidgetPrograms->hideColumn((int) ProgramTableColumn::Kadin34PlusBasariSirasi);
+    ui->tableWidgetPrograms->hideColumn(ProgramTableColumn::GenelBasariSirasi);
+    ui->tableWidgetPrograms->hideColumn(ProgramTableColumn::OkulBirincisiBasariSirasi);
+    ui->tableWidgetPrograms->hideColumn(ProgramTableColumn::SehitGaziYakiniBasariSirasi);
+    ui->tableWidgetPrograms->hideColumn(ProgramTableColumn::DepremzedeBasariSirasi);
+    ui->tableWidgetPrograms->hideColumn(ProgramTableColumn::Kadin34PlusBasariSirasi);
 }
 
 void MainWindow::initializeYKSTableColumnNames()
