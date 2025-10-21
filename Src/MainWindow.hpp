@@ -13,9 +13,9 @@ You should have received a copy of the GNU General Public License along with thi
 #include <QMainWindow>
 #include <QLocale>
 #include <QSqlDatabase>
-#include "EnumDefinitions.hpp"
 #include <QHeaderView>
 #include <QTableWidgetItem>
+#include <BackEnd.hpp>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -48,7 +48,7 @@ private slots:
 
     void on_comboBoxUlke_currentIndexChanged(int index);
 
-    void on_comboBoxLicenseType_currentIndexChanged(int index);
+    void on_comboBoxDegreeType_currentIndexChanged(int index);
 
     void on_comboBoxUniversityType_currentIndexChanged(int index);
 
@@ -61,8 +61,6 @@ private slots:
     void on_checkBoxKKTCUyruklu_toggled(bool checked);
 
     void on_checkBoxMTOK_toggled(bool checked);
-
-    void on_checkBoxEkKontenjan_toggled(bool checked);
 
     void on_pushButtonClearUniversityComboBox_clicked();
 
@@ -84,11 +82,11 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    void initDB();
+    AcademyScopeBackEnd *backEnd;
+    AcademyScopeParameters parameters;
     void setProgramTableColumnWidths();
     void populateUniversitiesComboBox();
     void populateDepartmentsComboBox();
-    void populateProgramTable();
     void hideUnnecessaryColumnsOnTheProgramTable();
     void hideUnusedColumnsOnTheProgramTable();
     void initializeYKSTableColumnNames();
@@ -104,5 +102,4 @@ private:
     QHeaderView * programTableHorizontalHeader = nullptr;
     QStringList yksTableColumnNames;
     QSqlDatabase db;
-    TercihTuru tercihTuru = TercihTuru::NormalTercih;
 };

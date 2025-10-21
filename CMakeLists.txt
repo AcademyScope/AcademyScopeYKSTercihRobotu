@@ -21,13 +21,26 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets Sql)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets Sql)
 
+include_directories(src)
+include_directories(src/Util)
+include_directories(Components/BackEnd/src)
+
 file(GLOB ProjectSrc
-    "./*.cpp"
-    "./*.hpp"
-    "./*.ui"
-    "./*.qrc"
-    "./Utils/*.cpp"
-    "./Utils/*.hpp"
+    "./Src/*.cpp"
+    "./Src/*.hpp"
+    "./UI/*.ui"
+    "./Resources/*.qrc"
+    "./Src/Utils/*.cpp"
+    "./Src/Utils/*.hpp"
+    "./Components/BackEnd/Src/*.cpp"
+    "./Components/BackEnd/Src/*.hpp"
+    "./Components/BackEnd/Src/Utils/*.cpp"
+    "./Components/BackEnd/Src/Utils/*.hpp"
+)
+
+set(CMAKE_AUTOUIC_SEARCH_PATHS
+    "Src"
+    "UI"
 )
 
 ####################
@@ -47,6 +60,8 @@ endif()
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     if(APPLE)
+        find_package(Qt6 REQUIRED COMPONENTS Core)
+
         qt_add_executable(AcademyScope
             MANUAL_FINALIZATION
             ${ProjectSrc}
@@ -85,6 +100,7 @@ else()
 endif()
 
 target_link_libraries(AcademyScope PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Sql)
+target_link_libraries(AcademyScope PRIVATE Qt6::Core)
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an
