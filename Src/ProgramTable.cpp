@@ -32,7 +32,7 @@ QTableWidgetItem * ProgramTable::createItem(QString text, Qt::AlignmentFlag alig
 
 void ProgramTable::insertRow(int rowIndex)
 {
-
+    QTableWidget::insertRow(rowIndex);
 }
 
 bool ProgramTable::isColumnHidden(ProgramTableColumn column)

@@ -115,6 +115,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_comboBoxUniversity_editTextChanged(const QString &arg1)
 {
+    parameters.universityName = arg1;
     backEnd->populateProgramTable(parameters);
 }
 
@@ -214,7 +215,7 @@ void MainWindow::hideUnnecessaryColumnsOnTheProgramTable() {
     }
 
     //Ek kontenjanda yok
-    if(tercihTuru == TercihTuru::NormalTercih) {
+    if(parameters.placementType == PlacementType::Regular) {
         if(ui->checkBoxGenel->isChecked())
             ui->tableWidgetPrograms->showColumn(ProgramTableColumn::GenelYerlesen);
         if(ui->checkBoxOkulBirincisi->isChecked())
@@ -277,10 +278,6 @@ void MainWindow::initializeYKSTableColumnNames()
     };
 }
 
-void MainWindow::initializeParameters() {
-
-}
-
 void MainWindow::setLogoDarkMode(bool isDarkMode) {
     if(isDarkMode) {
         ui->logo->setStyleSheet("image: url(:/Resources/Images/AcademyScopeDarkMode.png);");
@@ -314,7 +311,6 @@ QString MainWindow::getDbColumnNameFromProgramTableColumnIndex(int columnIndex) 
     case ProgramTableColumn::Kadin34PlusEnKucukPuan:   return "Kadin34EnKucukPuan";
     default: return QString();
     }
-
 }
 
 QTableWidgetItem *MainWindow::createTableWidgetItem(const QString &text, const Qt::Alignment &alignment)
@@ -326,92 +322,135 @@ QTableWidgetItem *MainWindow::createTableWidgetItem(const QString &text, const Q
 
 void MainWindow::on_checkBoxGenel_toggled(bool checked)
 {
+    parameters.selectedQuotaTypes.regularQuota = checked;
     backEnd->populateProgramTable(parameters);
 }
 
 
 void MainWindow::on_checkBoxOkulBirincisi_toggled(bool checked)
 {
+    parameters.selectedQuotaTypes.highSchoolValedictoriansQuota = checked;
     backEnd->populateProgramTable(parameters);
 }
 
 
 void MainWindow::on_checkBoxSehitGaziYakini_toggled(bool checked)
 {
+    parameters.selectedQuotaTypes.martyrsAndVeteransQuota = checked;
     backEnd->populateProgramTable(parameters);
 }
 
 
 void MainWindow::on_checkBoxDepremzede_toggled(bool checked)
 {
+    parameters.selectedQuotaTypes.earthquakeVictimsQuota = checked;
     backEnd->populateProgramTable(parameters);
 }
 
 
 void MainWindow::on_checkBoxKadin34_toggled(bool checked)
 {
+    parameters.selectedQuotaTypes.women34PlusQuota = checked;
     backEnd->populateProgramTable(parameters);
 }
 
 void MainWindow::on_comboBoxDepartment_editTextChanged(const QString &arg1)
 {
+    parameters.departmentName = arg1;
     backEnd->populateProgramTable(parameters);
 }
 
 
 void MainWindow::on_comboBoxUlke_currentIndexChanged(int index)
 {
+    switch(index) {
+    case 0:
+        parameters.country = Country::AllCountries;
+        break;
+    case 1:
+        parameters.country = Country::Turkiye;
+        break;
+    case 2:
+        parameters.country = Country::Cyprus;
+        break;
+    case 3:
+        parameters.country = Country::ForeignCountries;
+        break;
+    default:
+        parameters.country = Country::AllCountries;
+        break;
+    }
     backEnd->populateProgramTable(parameters);
 }
 
 
-void MainWindow::on_comboBoxLicenseType_currentIndexChanged(int index)
+void MainWindow::on_comboBoxDegreeType_currentIndexChanged(int index)
 {
+    switch(index) {
+    case 0:
+        parameters.degreeType = DegreeType::All;
+        break;
+    case 1:
+        parameters.degreeType = DegreeType::Bachelor;
+        break;
+    case 2:
+        parameters.degreeType = DegreeType::Associate;
+        break;
+    }
     backEnd->populateProgramTable(parameters);
 }
 
 
 void MainWindow::on_comboBoxUniversityType_currentIndexChanged(int index)
 {
+    switch(index) {
+    case 0:
+        parameters.universityType = UniversityType::Undefined;
+        break;
+    case 1:
+        parameters.universityType = UniversityType::Government;
+        break;
+    case 2:
+        parameters.universityType = UniversityType::Private;
+        break;
+    }
     backEnd->populateProgramTable(parameters);
 }
 
 
 void MainWindow::on_checkBoxUcretsiz_toggled(bool checked)
 {
+    parameters.selectedTuitionFeeTypes.free = checked;
     backEnd->populateProgramTable(parameters);
 }
 
 
 void MainWindow::on_checkBoxIndirimli_toggled(bool checked)
 {
+    parameters.selectedTuitionFeeTypes.discounted = checked;
     backEnd->populateProgramTable(parameters);
 }
 
 
 void MainWindow::on_checkBoxUcretli_toggled(bool checked)
 {
+    parameters.selectedTuitionFeeTypes.paid = checked;
     backEnd->populateProgramTable(parameters);
 }
 
 
 void MainWindow::on_checkBoxKKTCUyruklu_toggled(bool checked)
 {
+    parameters.selectedQuotaTypes.trncNationalsQuota = checked;
     backEnd->populateProgramTable(parameters);
 }
 
 
 void MainWindow::on_checkBoxMTOK_toggled(bool checked)
 {
+    parameters.selectedQuotaTypes.mtokQuota = checked;
     backEnd->populateProgramTable(parameters);
 }
-
-
-void MainWindow::on_checkBoxEkKontenjan_toggled(bool checked)
-{
-    backEnd->populateProgramTable(parameters);
-}
-
 
 void MainWindow::on_pushButtonClearUniversityComboBox_clicked()
 {
@@ -434,9 +473,9 @@ void MainWindow::on_pushButtonAbout_clicked()
 void MainWindow::on_comboBoxTercihTuru_currentIndexChanged(int index)
 {
     if(index == 0)
-        tercihTuru = TercihTuru::NormalTercih;
+        parameters.placementType = PlacementType::Regular;
     else
-        tercihTuru = TercihTuru::EkTercih;
+        parameters.placementType = PlacementType::Additional;
     backEnd->populateProgramTable(parameters);
 }
 
@@ -450,18 +489,43 @@ void MainWindow::on_pushButtonClearPuanAraligi_clicked()
 
 void MainWindow::on_doubleSpinBoxEnKucukPuan_valueChanged(double arg1)
 {
+    parameters.scoreInterval.minimum = arg1;
     backEnd->populateProgramTable(parameters);
 }
 
 
 void MainWindow::on_doubleSpinBoxEnBuyukPuan_valueChanged(double arg1)
 {
+    parameters.scoreInterval.maximum = arg1;
     backEnd->populateProgramTable(parameters);
 }
 
 
 void MainWindow::on_comboBoxPuanTuru_currentIndexChanged(int index)
 {
+    switch(index) {
+    case 0:
+        parameters.trackType = TrackType::Undefined;
+    break;
+    case 1:
+        parameters.trackType = TrackType::Science;
+        break;
+    case 2:
+        parameters.trackType = TrackType::EqualWeight;
+        break;
+    case 3:
+        parameters.trackType = TrackType::Humanities;
+        break;
+    case 4:
+        parameters.trackType = TrackType::TYT;
+        break;
+    case 5:
+        parameters.trackType = TrackType::Language;
+        break;
+    default:
+        parameters.trackType = TrackType::Undefined;
+        break;
+    }
     backEnd->populateProgramTable(parameters);
 }
 

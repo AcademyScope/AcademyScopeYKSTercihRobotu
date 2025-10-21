@@ -48,7 +48,7 @@ private slots:
 
     void on_comboBoxUlke_currentIndexChanged(int index);
 
-    void on_comboBoxLicenseType_currentIndexChanged(int index);
+    void on_comboBoxDegreeType_currentIndexChanged(int index);
 
     void on_comboBoxUniversityType_currentIndexChanged(int index);
 
@@ -61,8 +61,6 @@ private slots:
     void on_checkBoxKKTCUyruklu_toggled(bool checked);
 
     void on_checkBoxMTOK_toggled(bool checked);
-
-    void on_checkBoxEkKontenjan_toggled(bool checked);
 
     void on_pushButtonClearUniversityComboBox_clicked();
 
@@ -92,7 +90,6 @@ private:
     void hideUnnecessaryColumnsOnTheProgramTable();
     void hideUnusedColumnsOnTheProgramTable();
     void initializeYKSTableColumnNames();
-    void initializeParameters();
     bool event(QEvent *e) override;
     void setLogoDarkMode(bool isDarkMode);
     QString getDbColumnNameFromProgramTableColumnIndex(int columnIndex);
@@ -105,5 +102,4 @@ private:
     QHeaderView * programTableHorizontalHeader = nullptr;
     QStringList yksTableColumnNames;
     QSqlDatabase db;
-    TercihTuru tercihTuru = TercihTuru::NormalTercih;
 };
