@@ -60,6 +60,8 @@ endif()
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     if(APPLE)
+        find_package(Qt6 REQUIRED COMPONENTS Core)
+
         qt_add_executable(AcademyScope
             MANUAL_FINALIZATION
             ${ProjectSrc}
@@ -98,6 +100,7 @@ else()
 endif()
 
 target_link_libraries(AcademyScope PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Sql)
+target_link_libraries(AcademyScope PRIVATE Qt6::Core)
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an
