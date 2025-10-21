@@ -74,7 +74,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     hideUnusedColumnsOnTheProgramTable();
     hideUnnecessaryColumnsOnTheProgramTable();
-    populateProgramTable();
+    //backEnd->populateProgramTable(parameters);
 
     programTableHorizontalHeader = ui->tableWidgetPrograms->horizontalHeader();
     programTableHorizontalHeader->setSortIndicatorShown(true);
@@ -102,7 +102,10 @@ void MainWindow::onProgramTableHeaderItemClicked(int logicalIndex) {
         lastSortOrder = Qt::AscendingOrder;
     }
     programTableHorizontalHeader->setSortIndicator(lastSortCol, lastSortOrder);
-    populateProgramTable();
+    parameters.order.toBeOrdered = true;
+    parameters.order.column = (ProgramTableColumn) lastSortCol;
+    parameters.order.direction = lastSortOrder;
+    backEnd->populateProgramTable(parameters);
 }
 
 MainWindow::~MainWindow()
@@ -144,31 +147,7 @@ void MainWindow::populateDepartmentsComboBox() {
     firstItem->setForeground(QBrush(Qt::gray));
     */
     QSqlQuery query;
-    QList<QString> departments;
-
-    QString selectionQuery = "SELECT DISTINCT\n\
-        TRIM(\n\
-            CASE\n\
-                WHEN instr(ProgramAdi, '(') > 0\n\
-            THEN substr(ProgramAdi, 1, instr(ProgramAdi, '(') - 1)\n\
-            ELSE ProgramAdi\n\
-                END\n\
-            ) AS AnaProgramAdi\n\
-            FROM YKS;\
-           ";
-
-    if (query.exec(selectionQuery)) {
-        while (query.next()) {
-            QString department = query.value(0).toString();
-            departments.append(department);
-        }
-    }
-
-    QCollator collator(QLocale(QLocale::Turkish, QLocale::Turkey));
-    std::sort(departments.begin(), departments.end(),
-              [&](const QString &a, const QString &b) {
-                  return collator.compare(a, b) < 0;
-              });
+    QList<QString> departments = backEnd->getDepartments();
 
     for (auto &department : departments) {
         ui->comboBoxDepartment->addItem(department);
@@ -347,90 +326,90 @@ QTableWidgetItem *MainWindow::createTableWidgetItem(const QString &text, const Q
 
 void MainWindow::on_checkBoxGenel_toggled(bool checked)
 {
-    populateProgramTable();
+    backEnd->populateProgramTable(parameters);
 }
 
 
 void MainWindow::on_checkBoxOkulBirincisi_toggled(bool checked)
 {
-    populateProgramTable();
+    backEnd->populateProgramTable(parameters);
 }
 
 
 void MainWindow::on_checkBoxSehitGaziYakini_toggled(bool checked)
 {
-    populateProgramTable();
+    backEnd->populateProgramTable(parameters);
 }
 
 
 void MainWindow::on_checkBoxDepremzede_toggled(bool checked)
 {
-    populateProgramTable();
+    backEnd->populateProgramTable(parameters);
 }
 
 
 void MainWindow::on_checkBoxKadin34_toggled(bool checked)
 {
-    populateProgramTable();
+    backEnd->populateProgramTable(parameters);
 }
 
 void MainWindow::on_comboBoxDepartment_editTextChanged(const QString &arg1)
 {
-    populateProgramTable();
+    backEnd->populateProgramTable(parameters);
 }
 
 
 void MainWindow::on_comboBoxUlke_currentIndexChanged(int index)
 {
-    populateProgramTable();
+    backEnd->populateProgramTable(parameters);
 }
 
 
 void MainWindow::on_comboBoxLicenseType_currentIndexChanged(int index)
 {
-    populateProgramTable();
+    backEnd->populateProgramTable(parameters);
 }
 
 
 void MainWindow::on_comboBoxUniversityType_currentIndexChanged(int index)
 {
-    populateProgramTable();
+    backEnd->populateProgramTable(parameters);
 }
 
 
 void MainWindow::on_checkBoxUcretsiz_toggled(bool checked)
 {
-    populateProgramTable();
+    backEnd->populateProgramTable(parameters);
 }
 
 
 void MainWindow::on_checkBoxIndirimli_toggled(bool checked)
 {
-    populateProgramTable();
+    backEnd->populateProgramTable(parameters);
 }
 
 
 void MainWindow::on_checkBoxUcretli_toggled(bool checked)
 {
-    populateProgramTable();
+    backEnd->populateProgramTable(parameters);
 }
 
 
 void MainWindow::on_checkBoxKKTCUyruklu_toggled(bool checked)
 {
-    populateProgramTable();
+    backEnd->populateProgramTable(parameters);
 }
 
 
 void MainWindow::on_checkBoxMTOK_toggled(bool checked)
 {
-    populateProgramTable();
+    backEnd->populateProgramTable(parameters);
 }
 
 
 void MainWindow::on_checkBoxEkKontenjan_toggled(bool checked)
 {
-    populateProgramTable();
+    backEnd->populateProgramTable(parameters);
 }
 
 
@@ -458,7 +437,7 @@ void MainWindow::on_comboBoxTercihTuru_currentIndexChanged(int index)
         tercihTuru = TercihTuru::NormalTercih;
     else
         tercihTuru = TercihTuru::EkTercih;
-    populateProgramTable();
+    backEnd->populateProgramTable(parameters);
 }
 
 
@@ -471,18 +450,18 @@ void MainWindow::on_pushButtonClearPuanAraligi_clicked()
 
 void MainWindow::on_doubleSpinBoxEnKucukPuan_valueChanged(double arg1)
 {
-    populateProgramTable();
+    backEnd->populateProgramTable(parameters);
 }
 
 
 void MainWindow::on_doubleSpinBoxEnBuyukPuan_valueChanged(double arg1)
 {
-    populateProgramTable();
+    backEnd->populateProgramTable(parameters);
 }
 
 
 void MainWindow::on_comboBoxPuanTuru_currentIndexChanged(int index)
 {
-    populateProgramTable();
+    backEnd->populateProgramTable(parameters);
 }
 
