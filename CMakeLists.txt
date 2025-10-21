@@ -43,7 +43,6 @@ set(CMAKE_AUTOUIC_SEARCH_PATHS
     "UI"
 )
 
-
 ####################
 # App Icon Definitions
 if(WIN32)
