@@ -21,8 +21,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets Sql)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets Sql)
 
-include_directories(src)
-include_directories(src/Util)
+include_directories(Src)
+include_directories(Src/Util)
 include_directories(Components/BackEnd/src)
 
 file(GLOB ProjectSrc

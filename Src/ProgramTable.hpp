@@ -24,7 +24,6 @@ public:
     void setRowCount(int rowCount) override;
     void setUpdatesEnabled(bool isEnabled) override;
     void setSortingEnabled(bool isEnabled) override;
-    QTableWidgetItem * createItem(QString text, Qt::AlignmentFlag) override;
     void insertRow(int rowIndex) override;
     bool isColumnHidden(ProgramTableColumn column) override;
     bool isColumnHidden(int columnIndex) override;
@@ -36,4 +35,5 @@ protected:
     QList<Qt::AlignmentFlag> columnAlignments;
     void setColumnAlignment(ProgramTableColumn column, Qt::AlignmentFlag alignment) override;
     void init() override;
+    QTableWidgetItem * createItem(QString text, Qt::AlignmentFlag);
 };
