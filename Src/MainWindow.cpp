@@ -25,8 +25,7 @@ You should have received a copy of the GNU General Public License along with thi
 #include <QStandardPaths>
 #include <QDir>
 #include <QtGlobal>
-#include "Utils/SQLiteUtil.hpp"
-#include "Utils/StringUtil.hpp"
+#include <QScrollBar>
 #include "Utils/DarkModeUtil.hpp"
 
 MainWindow::MainWindow(QWidget *parent)
@@ -35,7 +34,7 @@ MainWindow::MainWindow(QWidget *parent)
     , turkishLocale(QLocale::Turkish, QLocale::Turkey)
 {
     ui->setupUi(this);
-    backEnd = new AcademyScopeBackEnd(ui->tableWidgetPrograms);
+    backEnd = new AcademyScopeBackEnd();
     setLogoDarkMode(DarkModeUtil::isDarkMode());
     ui->doubleSpinBoxEnKucukPuan->setButtonSymbols(QAbstractSpinBox::NoButtons);
     ui->doubleSpinBoxEnBuyukPuan->setButtonSymbols(QAbstractSpinBox::NoButtons);
@@ -71,14 +70,21 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->comboBoxDepartment->lineEdit(), &QLineEdit::textEdited,
             proxyDepartment, [proxyDepartment](const QString &t){ proxyDepartment->setNeedle(t); });
 
+    connect(backEnd->getDataModel(), &AcademyScopeModel::columnVisibilityChanged, this, [this](int col, bool show){
+        qDebug()<<"Hidden";
+        ui->programTable->setColumnHidden(col, !show);
+    });
+
+    connect(ui->programTable->verticalScrollBar(), &QScrollBar::valueChanged, this, &MainWindow::onProgramTableScroll);
 
     hideUnusedColumnsOnTheProgramTable();
     hideUnnecessaryColumnsOnTheProgramTable();
     //backEnd->populateProgramTable(parameters);
 
-    programTableHorizontalHeader = ui->tableWidgetPrograms->horizontalHeader();
+    programTableHorizontalHeader = ui->programTable->horizontalHeader();
     programTableHorizontalHeader->setSortIndicatorShown(true);
     connect(programTableHorizontalHeader, &QHeaderView::sectionClicked, this, &MainWindow::onProgramTableHeaderItemClicked);
+    ui->programTable->setModel(backEnd->getDataModel());
 }
 
 bool MainWindow::event(QEvent *e) {
@@ -120,14 +126,14 @@ void MainWindow::on_comboBoxUniversity_editTextChanged(const QString &arg1)
 }
 
 void MainWindow::setProgramTableColumnWidths() {
-    ui->tableWidgetPrograms->setColumnWidth(ProgramTableColumn::ProgramKodu, 100);
-    ui->tableWidgetPrograms->setColumnWidth(ProgramTableColumn::Universite, 300);
-    ui->tableWidgetPrograms->setColumnWidth(ProgramTableColumn::Kampus, 170);
-    ui->tableWidgetPrograms->setColumnWidth(ProgramTableColumn::Program, 300);
-    ui->tableWidgetPrograms->setColumnWidth(ProgramTableColumn::PuanTuru, 40);
-    ui->tableWidgetPrograms->setColumnWidth(ProgramTableColumn::GenelKontenjan, 60);
-    ui->tableWidgetPrograms->setColumnWidth(ProgramTableColumn::GenelYerlesen, 60);
-    ui->tableWidgetPrograms->setColumnWidth(ProgramTableColumn::GenelEnKucukPuan, 100);
+    ui->programTable->setColumnWidth((int) ProgramTableColumn::ProgramKodu, 100);
+    ui->programTable->setColumnWidth((int) ProgramTableColumn::Universite, 300);
+    ui->programTable->setColumnWidth((int) ProgramTableColumn::Kampus, 170);
+    ui->programTable->setColumnWidth((int) ProgramTableColumn::Program, 300);
+    ui->programTable->setColumnWidth((int) ProgramTableColumn::PuanTuru, 40);
+    ui->programTable->setColumnWidth((int) ProgramTableColumn::GenelKontenjan, 60);
+    ui->programTable->setColumnWidth((int) ProgramTableColumn::GenelYerlesen, 60);
+    ui->programTable->setColumnWidth((int) ProgramTableColumn::GenelEnKucukPuan, 100);
 }
 
 void MainWindow::populateUniversitiesComboBox() {
@@ -158,90 +164,90 @@ void MainWindow::populateDepartmentsComboBox() {
 
 void MainWindow::hideUnnecessaryColumnsOnTheProgramTable() {
     if(ui->checkBoxGenel->isChecked() || ui->checkBoxKKTCUyruklu->isChecked() || ui->checkBoxMTOK->isChecked()) {
-        ui->tableWidgetPrograms->showColumn(ProgramTableColumn::GenelKontenjan);
-        ui->tableWidgetPrograms->showColumn(ProgramTableColumn::GenelYerlesen);
-        ui->tableWidgetPrograms->showColumn(ProgramTableColumn::GenelEnKucukPuan);
+        ui->programTable->showColumn((int) ProgramTableColumn::GenelKontenjan);
+        ui->programTable->showColumn((int) ProgramTableColumn::GenelYerlesen);
+        ui->programTable->showColumn((int) ProgramTableColumn::GenelEnKucukPuan);
     }
     else {
-        ui->tableWidgetPrograms->hideColumn(ProgramTableColumn::GenelKontenjan);
-        ui->tableWidgetPrograms->hideColumn(ProgramTableColumn::GenelYerlesen);
-        ui->tableWidgetPrograms->hideColumn(ProgramTableColumn::GenelEnKucukPuan);
+        ui->programTable->hideColumn((int) ProgramTableColumn::GenelKontenjan);
+        ui->programTable->hideColumn((int) ProgramTableColumn::GenelYerlesen);
+        ui->programTable->hideColumn((int) ProgramTableColumn::GenelEnKucukPuan);
     }
 
     if(ui->checkBoxOkulBirincisi->isChecked()) {
-        ui->tableWidgetPrograms->showColumn(ProgramTableColumn::OkulBirincisiKontenjan);
-        ui->tableWidgetPrograms->showColumn(ProgramTableColumn::OkulBirincisiYerlesen);
-        ui->tableWidgetPrograms->showColumn(ProgramTableColumn::OkulBirincisiEnKucukPuan);
+        ui->programTable->showColumn((int) ProgramTableColumn::OkulBirincisiKontenjan);
+        ui->programTable->showColumn((int) ProgramTableColumn::OkulBirincisiYerlesen);
+        ui->programTable->showColumn((int) ProgramTableColumn::OkulBirincisiEnKucukPuan);
     }
     else {
-        ui->tableWidgetPrograms->hideColumn(ProgramTableColumn::OkulBirincisiKontenjan);
-        ui->tableWidgetPrograms->hideColumn(ProgramTableColumn::OkulBirincisiYerlesen);
-        ui->tableWidgetPrograms->hideColumn(ProgramTableColumn::OkulBirincisiEnKucukPuan);
+        ui->programTable->hideColumn((int) ProgramTableColumn::OkulBirincisiKontenjan);
+        ui->programTable->hideColumn((int) ProgramTableColumn::OkulBirincisiYerlesen);
+        ui->programTable->hideColumn((int) ProgramTableColumn::OkulBirincisiEnKucukPuan);
     }
 
     if(ui->checkBoxSehitGaziYakini->isChecked()) {
-        ui->tableWidgetPrograms->showColumn(ProgramTableColumn::SehitGaziYakiniKontenjan);
-        ui->tableWidgetPrograms->showColumn(ProgramTableColumn::SehitGaziYakiniYerlesen);
-        ui->tableWidgetPrograms->showColumn(ProgramTableColumn::SehitGaziYakiniEnKucukPuan);
+        ui->programTable->showColumn((int) ProgramTableColumn::SehitGaziYakiniKontenjan);
+        ui->programTable->showColumn((int) ProgramTableColumn::SehitGaziYakiniYerlesen);
+        ui->programTable->showColumn((int) ProgramTableColumn::SehitGaziYakiniEnKucukPuan);
     }
     else {
-        ui->tableWidgetPrograms->hideColumn(ProgramTableColumn::SehitGaziYakiniKontenjan);
-        ui->tableWidgetPrograms->hideColumn(ProgramTableColumn::SehitGaziYakiniYerlesen);
-        ui->tableWidgetPrograms->hideColumn(ProgramTableColumn::SehitGaziYakiniEnKucukPuan);
+        ui->programTable->hideColumn((int) ProgramTableColumn::SehitGaziYakiniKontenjan);
+        ui->programTable->hideColumn((int) ProgramTableColumn::SehitGaziYakiniYerlesen);
+        ui->programTable->hideColumn((int) ProgramTableColumn::SehitGaziYakiniEnKucukPuan);
     }
 
 
     if(ui->checkBoxDepremzede->isChecked()) {
-        ui->tableWidgetPrograms->showColumn(ProgramTableColumn::DepremzedeKontenjan);
-        ui->tableWidgetPrograms->showColumn(ProgramTableColumn::DepremzedeYerlesen);
-        ui->tableWidgetPrograms->showColumn(ProgramTableColumn::DepremzedeEnKucukPuan);
+        ui->programTable->showColumn((int) ProgramTableColumn::DepremzedeKontenjan);
+        ui->programTable->showColumn((int) ProgramTableColumn::DepremzedeYerlesen);
+        ui->programTable->showColumn((int) ProgramTableColumn::DepremzedeEnKucukPuan);
     }
     else {
-        ui->tableWidgetPrograms->hideColumn(ProgramTableColumn::DepremzedeKontenjan);
-        ui->tableWidgetPrograms->hideColumn(ProgramTableColumn::DepremzedeYerlesen);
-        ui->tableWidgetPrograms->hideColumn(ProgramTableColumn::DepremzedeEnKucukPuan);
+        ui->programTable->hideColumn((int) ProgramTableColumn::DepremzedeKontenjan);
+        ui->programTable->hideColumn((int) ProgramTableColumn::DepremzedeYerlesen);
+        ui->programTable->hideColumn((int) ProgramTableColumn::DepremzedeEnKucukPuan);
     }
 
 
     if(ui->checkBoxKadin34->isChecked()) {
-        ui->tableWidgetPrograms->showColumn(ProgramTableColumn::Kadin34PlusKontenjan);
-        ui->tableWidgetPrograms->showColumn(ProgramTableColumn::Kadin34PlusYerlesen);
-        ui->tableWidgetPrograms->showColumn(ProgramTableColumn::Kadin34PlusEnKucukPuan);
+        ui->programTable->showColumn((int) ProgramTableColumn::Kadin34PlusKontenjan);
+        ui->programTable->showColumn((int) ProgramTableColumn::Kadin34PlusYerlesen);
+        ui->programTable->showColumn((int) ProgramTableColumn::Kadin34PlusEnKucukPuan);
     }
     else {
-        ui->tableWidgetPrograms->hideColumn(ProgramTableColumn::Kadin34PlusKontenjan);
-        ui->tableWidgetPrograms->hideColumn(ProgramTableColumn::Kadin34PlusYerlesen);
-        ui->tableWidgetPrograms->hideColumn(ProgramTableColumn::Kadin34PlusEnKucukPuan);
+        ui->programTable->hideColumn((int) ProgramTableColumn::Kadin34PlusKontenjan);
+        ui->programTable->hideColumn((int) ProgramTableColumn::Kadin34PlusYerlesen);
+        ui->programTable->hideColumn((int) ProgramTableColumn::Kadin34PlusEnKucukPuan);
     }
 
     //Ek kontenjanda yok
     if(parameters.placementType == PlacementType::Regular) {
         if(ui->checkBoxGenel->isChecked())
-            ui->tableWidgetPrograms->showColumn(ProgramTableColumn::GenelYerlesen);
+            ui->programTable->showColumn((int) ProgramTableColumn::GenelYerlesen);
         if(ui->checkBoxOkulBirincisi->isChecked())
-            ui->tableWidgetPrograms->showColumn(ProgramTableColumn::OkulBirincisiYerlesen);
+            ui->programTable->showColumn((int) ProgramTableColumn::OkulBirincisiYerlesen);
         if(ui->checkBoxSehitGaziYakini->isChecked())
-            ui->tableWidgetPrograms->showColumn(ProgramTableColumn::SehitGaziYakiniYerlesen);
+            ui->programTable->showColumn((int) ProgramTableColumn::SehitGaziYakiniYerlesen);
         if(ui->checkBoxDepremzede->isChecked())
-            ui->tableWidgetPrograms->showColumn(ProgramTableColumn::DepremzedeYerlesen);
+            ui->programTable->showColumn((int) ProgramTableColumn::DepremzedeYerlesen);
         if(ui->checkBoxKadin34->isChecked())
-            ui->tableWidgetPrograms->showColumn(ProgramTableColumn::Kadin34PlusYerlesen);
+            ui->programTable->showColumn((int) ProgramTableColumn::Kadin34PlusYerlesen);
     }
     else {
-        ui->tableWidgetPrograms->hideColumn(ProgramTableColumn::GenelYerlesen);
-        ui->tableWidgetPrograms->hideColumn(ProgramTableColumn::OkulBirincisiYerlesen);
-        ui->tableWidgetPrograms->hideColumn(ProgramTableColumn::SehitGaziYakiniYerlesen);
-        ui->tableWidgetPrograms->hideColumn(ProgramTableColumn::DepremzedeYerlesen);
-        ui->tableWidgetPrograms->hideColumn(ProgramTableColumn::Kadin34PlusYerlesen);
+        ui->programTable->hideColumn((int) ProgramTableColumn::GenelYerlesen);
+        ui->programTable->hideColumn((int) ProgramTableColumn::OkulBirincisiYerlesen);
+        ui->programTable->hideColumn((int) ProgramTableColumn::SehitGaziYakiniYerlesen);
+        ui->programTable->hideColumn((int) ProgramTableColumn::DepremzedeYerlesen);
+        ui->programTable->hideColumn((int) ProgramTableColumn::Kadin34PlusYerlesen);
     }
 }
 
 void MainWindow::hideUnusedColumnsOnTheProgramTable() {
-    ui->tableWidgetPrograms->hideColumn(ProgramTableColumn::GenelBasariSirasi);
-    ui->tableWidgetPrograms->hideColumn(ProgramTableColumn::OkulBirincisiBasariSirasi);
-    ui->tableWidgetPrograms->hideColumn(ProgramTableColumn::SehitGaziYakiniBasariSirasi);
-    ui->tableWidgetPrograms->hideColumn(ProgramTableColumn::DepremzedeBasariSirasi);
-    ui->tableWidgetPrograms->hideColumn(ProgramTableColumn::Kadin34PlusBasariSirasi);
+    ui->programTable->hideColumn((int) ProgramTableColumn::GenelBasariSirasi);
+    ui->programTable->hideColumn((int) ProgramTableColumn::OkulBirincisiBasariSirasi);
+    ui->programTable->hideColumn((int) ProgramTableColumn::SehitGaziYakiniBasariSirasi);
+    ui->programTable->hideColumn((int) ProgramTableColumn::DepremzedeBasariSirasi);
+    ui->programTable->hideColumn((int) ProgramTableColumn::Kadin34PlusBasariSirasi);
 }
 
 void MainWindow::initializeYKSTableColumnNames()
@@ -311,6 +317,27 @@ QString MainWindow::getDbColumnNameFromProgramTableColumnIndex(int columnIndex) 
     case ProgramTableColumn::Kadin34PlusEnKucukPuan:   return "Kadin34EnKucukPuan";
     default: return QString();
     }
+}
+
+void MainWindow::getProgramTableVisibleRowIndexes(int &visibleTopRow, int &visibleBottomRow)
+{
+    QRect visibleRect = ui->programTable->viewport()->rect();
+
+    QModelIndex topIndex    = ui->programTable->indexAt(QPoint(0, visibleRect.top()));
+    QModelIndex bottomIndex = ui->programTable->indexAt(QPoint(0, visibleRect.bottom()));
+
+    if (!topIndex.isValid())
+        topIndex = ui->programTable->model()->index(0, 0);
+
+    if (!bottomIndex.isValid()) {
+        int lastRow = ui->programTable->model()->rowCount() - 1;
+        bottomIndex = ui->programTable->model()->index(lastRow, 0);
+    }
+
+    visibleTopRow = topIndex.row();
+    visibleBottomRow = bottomIndex.row();
+
+    return;
 }
 
 QTableWidgetItem *MainWindow::createTableWidgetItem(const QString &text, const Qt::Alignment &alignment)
@@ -527,5 +554,58 @@ void MainWindow::on_comboBoxPuanTuru_currentIndexChanged(int index)
         break;
     }
     backEnd->populateProgramTable(parameters);
+}
+
+void MainWindow::onProgramTableScroll(int scrollValue)
+{
+    int visibleTopRow, visibleBottomRow;
+    getProgramTableVisibleRowIndexes(visibleTopRow, visibleBottomRow);
+    //qDebug()<<"Top"<<visibleTopRow<<"Bottom"<<visibleBottomRow;
+    auto *model = backEnd->getDataModel();
+    if (!model) return;
+
+    const int rowHeight   = ui->programTable->rowHeight(0);
+    const int visibleRows = ui->programTable->viewport()->height() / rowHeight;
+    const int totalRows   = model->getDataWindow()->tableRowCount;
+
+    //const int topRow    = scrollValue / rowHeight;
+    //const int bottomRow = std::min(totalRows - 1, topRow + visibleRows);
+
+    auto *dataWindow = model->getDataWindow();
+    const int newBegin = std::max(0, visibleTopRow);
+    const int newEnd   = std::min(totalRows - 1, visibleTopRow + dataWindow->windowSize);
+
+    if(visibleTopRow <= dataWindow->beginningIndex) {//going upward
+        //qDebug()<<"going upward, visibleTopRow"<<visibleTopRow<<"dataWindow beginning index" << dataWindow->beginningIndex;
+        dataWindow->beginningIndex -= dataWindow->windowSize/2;
+        if(dataWindow->beginningIndex < 0)
+            dataWindow->beginningIndex = 0;
+        dataWindow->endingIndex = dataWindow->beginningIndex + dataWindow->windowSize - 1;
+        model->loadCurrentWindow();
+    }
+    else if(visibleBottomRow >= dataWindow->endingIndex) {//going downward
+        //qDebug()<<"going downward, visibleBottomRow"<<visibleTopRow<<"dataWindow ending index" << dataWindow->endingIndex;
+        dataWindow->beginningIndex += dataWindow->windowSize/2;
+        dataWindow->endingIndex = dataWindow->beginningIndex + dataWindow->windowSize - 1;
+        if(dataWindow->endingIndex > dataWindow->tableRowCount - 1) {
+            dataWindow->endingIndex = dataWindow->tableRowCount - 1;
+            dataWindow->beginningIndex = dataWindow->endingIndex - dataWindow->windowSize + 1;
+        }
+        model->loadCurrentWindow();
+    }
+    //data is upward of the visible area || data is downward of the visible area
+    if(visibleTopRow > dataWindow->endingIndex || visibleBottomRow < dataWindow->beginningIndex){
+        //qDebug() << "Jump";
+        dataWindow->beginningIndex = visibleTopRow - dataWindow->windowSize/2;
+        dataWindow->endingIndex = dataWindow->beginningIndex + dataWindow->windowSize - 1;
+        model->loadCurrentWindow();
+    }
+    return;
+
+    if (newBegin != dataWindow->beginningIndex || newEnd != dataWindow->endingIndex) {
+        dataWindow->beginningIndex = newBegin;
+        dataWindow->endingIndex = newEnd;
+        model->loadCurrentWindow();
+    }
 }
 

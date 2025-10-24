@@ -80,9 +80,12 @@ private slots:
 
     void on_comboBoxPuanTuru_currentIndexChanged(int index);
 
+    void onProgramTableScroll(int scrollBarValue);
+
 private:
     Ui::MainWindow *ui;
     AcademyScopeBackEnd *backEnd;
+    DataWindow *dataWindow;
     AcademyScopeParameters parameters;
     void setProgramTableColumnWidths();
     void populateUniversitiesComboBox();
@@ -93,6 +96,7 @@ private:
     bool event(QEvent *e) override;
     void setLogoDarkMode(bool isDarkMode);
     QString getDbColumnNameFromProgramTableColumnIndex(int columnIndex);
+    void getProgramTableVisibleRowIndexes(int &visibleTopRow, int &visibleBottomRow);
 
     QTableWidgetItem* createTableWidgetItem(const QString &text, const Qt::Alignment &alignment = Qt::AlignLeft | Qt::AlignVCenter);
 

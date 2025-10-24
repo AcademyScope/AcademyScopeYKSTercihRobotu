@@ -290,138 +290,6 @@
       </property>
      </spacer>
     </item>
-    <item row="4" column="0" colspan="6">
-     <widget class="ProgramTable" name="tableWidgetPrograms">
-      <property name="editTriggers">
-       <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
-      </property>
-      <column>
-       <property name="text">
-        <string>Program Kodu</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Üniversite</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Kampüs</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Program</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Puan Türü</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Kontenjan</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Yerleşen</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Başarı Sırası</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>En Küçük Puanı</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Okul Birincisi Kontenjan</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Okul Birincisi Yerleşen</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Okul Birincisi Başarı Sırası</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Okul Birincisi En Küçük Puan</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Şehit / Gazi Yakını Kontenjan</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Şehit / Gazi Yakını Yerleşen</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Şehit / Gazi Yakını Başarı Sırası</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Şehit / Gazi Yakını En Küçük Puanı</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Depremzede Kontenjan</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Depremzede Yerleşen</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Depremzede Başarı Sırası</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Depremzede En Küçük Puan</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>34+ Kadın Kontenjan</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>34+ Kadın Yerleşen</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>34+ Kadın Başarı Sırası</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>34+ Kadın En Küçük Puanı</string>
-       </property>
-      </column>
-     </widget>
-    </item>
     <item row="2" column="0">
      <layout class="QGridLayout" name="gridLayout">
       <property name="horizontalSpacing">
@@ -1110,6 +978,13 @@
       </item>
      </layout>
     </item>
+    <item row="4" column="0" colspan="6">
+     <widget class="QTableView" name="programTable">
+      <property name="editTriggers">
+       <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
+      </property>
+     </widget>
+    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -1123,13 +998,6 @@
    </property>
   </widget>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>ProgramTable</class>
-   <extends>QTableWidget</extends>
-   <header location="global">ProgramTable.hpp</header>
-  </customwidget>
- </customwidgets>
  <tabstops>
   <tabstop>comboBoxUniversity</tabstop>
   <tabstop>comboBoxDepartment</tabstop>
@@ -1157,7 +1025,7 @@
   <tabstop>pushButtonSettings</tabstop>
   <tabstop>pushButtonClearDepartmentComboBox</tabstop>
   <tabstop>pushButtonMenu</tabstop>
-  <tabstop>tableWidgetPrograms</tabstop>
+  <tabstop>programTable</tabstop>
  </tabstops>
  <resources/>
  <connections/>
