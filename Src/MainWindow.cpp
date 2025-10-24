@@ -25,6 +25,7 @@ You should have received a copy of the GNU General Public License along with thi
 #include <QStandardPaths>
 #include <QDir>
 #include <QtGlobal>
+#include <QScrollBar>
 #include "Utils/DarkModeUtil.hpp"
 
 MainWindow::MainWindow(QWidget *parent)
@@ -74,6 +75,7 @@ MainWindow::MainWindow(QWidget *parent)
         ui->programTable->setColumnHidden(col, !show);
     });
 
+    connect(ui->programTable->verticalScrollBar(), &QScrollBar::valueChanged, this, &MainWindow::onProgramTableScroll);
 
     hideUnusedColumnsOnTheProgramTable();
     hideUnnecessaryColumnsOnTheProgramTable();
@@ -317,6 +319,27 @@ QString MainWindow::getDbColumnNameFromProgramTableColumnIndex(int columnIndex) 
     }
 }
 
+void MainWindow::getProgramTableVisibleRowIndexes(int &visibleTopRow, int &visibleBottomRow)
+{
+    QRect visibleRect = ui->programTable->viewport()->rect();
+
+    QModelIndex topIndex    = ui->programTable->indexAt(QPoint(0, visibleRect.top()));
+    QModelIndex bottomIndex = ui->programTable->indexAt(QPoint(0, visibleRect.bottom()));
+
+    if (!topIndex.isValid())
+        topIndex = ui->programTable->model()->index(0, 0);
+
+    if (!bottomIndex.isValid()) {
+        int lastRow = ui->programTable->model()->rowCount() - 1;
+        bottomIndex = ui->programTable->model()->index(lastRow, 0);
+    }
+
+    visibleTopRow = topIndex.row();
+    visibleBottomRow = bottomIndex.row();
+
+    return;
+}
+
 QTableWidgetItem *MainWindow::createTableWidgetItem(const QString &text, const Qt::Alignment &alignment)
 {
     QTableWidgetItem *item = new QTableWidgetItem(text);
@@ -531,5 +554,58 @@ void MainWindow::on_comboBoxPuanTuru_currentIndexChanged(int index)
         break;
     }
     backEnd->populateProgramTable(parameters);
+}
+
+void MainWindow::onProgramTableScroll(int scrollValue)
+{
+    int visibleTopRow, visibleBottomRow;
+    getProgramTableVisibleRowIndexes(visibleTopRow, visibleBottomRow);
+    //qDebug()<<"Top"<<visibleTopRow<<"Bottom"<<visibleBottomRow;
+    auto *model = backEnd->getDataModel();
+    if (!model) return;
+
+    const int rowHeight   = ui->programTable->rowHeight(0);
+    const int visibleRows = ui->programTable->viewport()->height() / rowHeight;
+    const int totalRows   = model->getDataWindow()->tableRowCount;
+
+    //const int topRow    = scrollValue / rowHeight;
+    //const int bottomRow = std::min(totalRows - 1, topRow + visibleRows);
+
+    auto *dataWindow = model->getDataWindow();
+    const int newBegin = std::max(0, visibleTopRow);
+    const int newEnd   = std::min(totalRows - 1, visibleTopRow + dataWindow->windowSize);
+
+    if(visibleTopRow <= dataWindow->beginningIndex) {//going upward
+        //qDebug()<<"going upward, visibleTopRow"<<visibleTopRow<<"dataWindow beginning index" << dataWindow->beginningIndex;
+        dataWindow->beginningIndex -= dataWindow->windowSize/2;
+        if(dataWindow->beginningIndex < 0)
+            dataWindow->beginningIndex = 0;
+        dataWindow->endingIndex = dataWindow->beginningIndex + dataWindow->windowSize - 1;
+        model->loadCurrentWindow();
+    }
+    else if(visibleBottomRow >= dataWindow->endingIndex) {//going downward
+        //qDebug()<<"going downward, visibleBottomRow"<<visibleTopRow<<"dataWindow ending index" << dataWindow->endingIndex;
+        dataWindow->beginningIndex += dataWindow->windowSize/2;
+        dataWindow->endingIndex = dataWindow->beginningIndex + dataWindow->windowSize - 1;
+        if(dataWindow->endingIndex > dataWindow->tableRowCount - 1) {
+            dataWindow->endingIndex = dataWindow->tableRowCount - 1;
+            dataWindow->beginningIndex = dataWindow->endingIndex - dataWindow->windowSize + 1;
+        }
+        model->loadCurrentWindow();
+    }
+    //data is upward of the visible area || data is downward of the visible area
+    if(visibleTopRow > dataWindow->endingIndex || visibleBottomRow < dataWindow->beginningIndex){
+        //qDebug() << "Jump";
+        dataWindow->beginningIndex = visibleTopRow - dataWindow->windowSize/2;
+        dataWindow->endingIndex = dataWindow->beginningIndex + dataWindow->windowSize - 1;
+        model->loadCurrentWindow();
+    }
+    return;
+
+    if (newBegin != dataWindow->beginningIndex || newEnd != dataWindow->endingIndex) {
+        dataWindow->beginningIndex = newBegin;
+        dataWindow->endingIndex = newEnd;
+        model->loadCurrentWindow();
+    }
 }
 
