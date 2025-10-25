@@ -82,6 +82,8 @@ private slots:
 
     void onProgramTableScroll(int scrollBarValue);
 
+    void on_pushButtosSaveResults_clicked();
+
 private:
     Ui::MainWindow *ui;
     AcademyScopeBackEnd *backEnd;

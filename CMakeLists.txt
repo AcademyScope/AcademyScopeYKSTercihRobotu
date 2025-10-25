@@ -18,11 +18,15 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+find_package(PkgConfig REQUIRED)
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets Sql)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets Sql)
+pkg_check_modules(xlsxwriter REQUIRED IMPORTED_TARGET xlsxwriter)
 
 include_directories(Src)
 include_directories(Src/Util)
+include_directories(Src/Interfaces)
+include_directories(Src/Implementations)
 include_directories(Components/BackEnd/src)
 
 file(GLOB ProjectSrc
@@ -32,6 +36,10 @@ file(GLOB ProjectSrc
     "./Resources/*.qrc"
     "./Src/Utils/*.cpp"
     "./Src/Utils/*.hpp"
+    "./Src/Interfaces/*.hpp"
+    "./Src/Interfaces/*.cpp"
+    "./Src/Implementations/*.hpp"
+    "./Src/Implementations/*.cpp"
     "./Components/BackEnd/Src/*.cpp"
     "./Components/BackEnd/Src/*.hpp"
     "./Components/BackEnd/Src/Utils/*.cpp"
@@ -99,8 +107,7 @@ else()
     endif()
 endif()
 
-target_link_libraries(AcademyScope PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Sql)
-target_link_libraries(AcademyScope PRIVATE Qt6::Core)
+target_link_libraries(AcademyScope PRIVATE Qt6::Core PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Sql PkgConfig::xlsxwriter)
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an
@@ -116,6 +123,9 @@ set_target_properties(AcademyScope PROPERTIES
     WIN32_EXECUTABLE TRUE
 )
 
+target_compile_definitions(AcademyScope PRIVATE
+    $<$<CONFIG:Debug>:PROJECT_PATH=\"${CMAKE_SOURCE_DIR}\">
+)
 ####################
 # macOS Liquid Glass Icon Support
 #

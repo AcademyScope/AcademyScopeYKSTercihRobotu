@@ -786,10 +786,7 @@
     <item row="0" column="1" colspan="2">
      <layout class="QGridLayout" name="gridLayout_5">
       <item row="1" column="1">
-       <widget class="QPushButton" name="pushButtonSettings_2">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
+       <widget class="QPushButton" name="pushButtosSaveResults">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
           <horstretch>0</horstretch>
@@ -1021,7 +1018,7 @@
   <tabstop>pushButtonAbout</tabstop>
   <tabstop>pushButtonClearPuanAraligi</tabstop>
   <tabstop>pushButtonClearUniversityComboBox</tabstop>
-  <tabstop>pushButtonSettings_2</tabstop>
+  <tabstop>pushButtosSaveResults</tabstop>
   <tabstop>pushButtonSettings</tabstop>
   <tabstop>pushButtonClearDepartmentComboBox</tabstop>
   <tabstop>pushButtonMenu</tabstop>

@@ -27,6 +27,11 @@ You should have received a copy of the GNU General Public License along with thi
 #include <QtGlobal>
 #include <QScrollBar>
 #include "Utils/DarkModeUtil.hpp"
+#include <QFileDialog>
+#include <QMessageBox>
+#include "Implementations/XLSXExporter.hpp"
+#include "Implementations/ODSExporter.hpp"
+#include "Implementations/CSVExporter.hpp"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -607,5 +612,41 @@ void MainWindow::onProgramTableScroll(int scrollValue)
         dataWindow->endingIndex = newEnd;
         model->loadCurrentWindow();
     }
+}
+
+
+void MainWindow::on_pushButtosSaveResults_clicked()
+{
+    QString filter = "Excel Dosyası (*.xlsx);;LibreOffice Dosyası (*.ods);;CSV Dosyası (*.csv)";
+
+    QString selectedFilter;
+
+    QString file = QFileDialog::getSaveFileName(
+        nullptr,
+        QObject::tr("Sonuçları Dışa Aktar"),
+        QString("AcademyScope_%1")
+            .arg(QDateTime::currentDateTime().toString("yyyyMMdd_HHmm")),
+        filter,
+        &selectedFilter
+        );
+
+    if (file.isEmpty())
+        return;
+
+    SpreadsheetExporter *exporter = nullptr;
+    if(selectedFilter.endsWith("(*.xlsx)"))
+        exporter = new XLSXExporter();
+    else if(selectedFilter.endsWith("(*.ods)"))
+        exporter = new ODSExporter();
+    else if(selectedFilter.endsWith("(*.csv)"))
+        exporter = new CSVExporter();
+    bool success = false;
+    if(exporter != nullptr)
+        success = exporter->exportModel(file, ui->programTable->model());
+
+    if(success)
+        QMessageBox::information(this, "Başarılı", QString("Dosya başarıyla kaydedildi:\n%1").arg(file));
+    else
+        QMessageBox::critical(this, "Hata", "Dosya kaydedilirken bir hata oluştu.");
 }
 
