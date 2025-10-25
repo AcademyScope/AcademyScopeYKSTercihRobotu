@@ -30,7 +30,6 @@ You should have received a copy of the GNU General Public License along with thi
 #include <QFileDialog>
 #include <QMessageBox>
 #include "Implementations/XLSXExporter.hpp"
-#include "Implementations/ODSExporter.hpp"
 #include "Implementations/CSVExporter.hpp"
 
 MainWindow::MainWindow(QWidget *parent)
@@ -617,7 +616,7 @@ void MainWindow::onProgramTableScroll(int scrollValue)
 
 void MainWindow::on_pushButtosSaveResults_clicked()
 {
-    QString filter = "Excel Dosyası (*.xlsx);;LibreOffice Dosyası (*.ods);;CSV Dosyası (*.csv)";
+    QString filter = "Excel Dosyası (*.xlsx);;CSV Dosyası (*.csv)";
 
     QString selectedFilter;
 
@@ -636,8 +635,6 @@ void MainWindow::on_pushButtosSaveResults_clicked()
     SpreadsheetExporter *exporter = nullptr;
     if(selectedFilter.endsWith("(*.xlsx)"))
         exporter = new XLSXExporter();
-    else if(selectedFilter.endsWith("(*.ods)"))
-        exporter = new ODSExporter();
     else if(selectedFilter.endsWith("(*.csv)"))
         exporter = new CSVExporter();
     bool success = false;
