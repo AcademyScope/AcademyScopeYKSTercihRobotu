@@ -131,9 +131,9 @@ void MainWindow::on_comboBoxUniversity_editTextChanged(const QString &arg1)
 
 void MainWindow::setProgramTableColumnWidths() {
     ui->programTable->setColumnWidth((int) ProgramTableColumn::ProgramKodu, 100);
-    ui->programTable->setColumnWidth((int) ProgramTableColumn::Universite, 300);
-    ui->programTable->setColumnWidth((int) ProgramTableColumn::Kampus, 170);
-    ui->programTable->setColumnWidth((int) ProgramTableColumn::Program, 300);
+    ui->programTable->setColumnWidth((int) ProgramTableColumn::UniversiteAdi, 300);
+    ui->programTable->setColumnWidth((int) ProgramTableColumn::FakulteYuksekOkulAdi, 170);
+    ui->programTable->setColumnWidth((int) ProgramTableColumn::ProgramAdi, 300);
     ui->programTable->setColumnWidth((int) ProgramTableColumn::PuanTuru, 40);
     ui->programTable->setColumnWidth((int) ProgramTableColumn::GenelKontenjan, 60);
     ui->programTable->setColumnWidth((int) ProgramTableColumn::GenelYerlesen, 60);
@@ -300,9 +300,9 @@ void MainWindow::setLogoDarkMode(bool isDarkMode) {
 QString MainWindow::getDbColumnNameFromProgramTableColumnIndex(int columnIndex) {
     switch (static_cast<ProgramTableColumn>(columnIndex)) {
     case ProgramTableColumn::ProgramKodu:              return "ProgramKodu";
-    case ProgramTableColumn::Universite:               return "UniversiteAdi";
-    case ProgramTableColumn::Kampus:                   return "FakulteYuksekokulAdi";
-    case ProgramTableColumn::Program:                  return "ProgramAdi";
+    case ProgramTableColumn::UniversiteAdi:            return "UniversiteAdi";
+    case ProgramTableColumn::FakulteYuksekOkulAdi:     return "FakulteYuksekokulAdi";
+    case ProgramTableColumn::ProgramAdi:               return "ProgramAdi";
     case ProgramTableColumn::PuanTuru:                 return "PuanTuru";
     case ProgramTableColumn::GenelKontenjan:           return "GenelKontenjan";
     case ProgramTableColumn::GenelYerlesen:            return "GenelYerlesen";
