@@ -27,4 +27,5 @@ enum class SpreadSheetFormat {
 class SpreadsheetExporter {
 public:
     virtual bool exportModel(const QString &path, const QAbstractItemModel* model) = 0;
+    virtual bool exportModel(const QString &path, const QString &dataQuery) = 0;
 };

@@ -48,3 +48,8 @@ bool XLSXExporter::exportModel(const QString &path, const QAbstractItemModel* mo
     workbook_close(workbook);
     return true;
 }
+
+bool XLSXExporter::exportModel(const QString &path, const QString &dataQuery)
+{
+
+}

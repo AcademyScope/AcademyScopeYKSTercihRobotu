@@ -19,4 +19,5 @@ class XLSXExporter : public SpreadsheetExporter
 {
 public:
     bool exportModel(const QString &path, const QAbstractItemModel* model) override;
+    bool exportModel(const QString &path, const QString &dataQuery) override;
 };

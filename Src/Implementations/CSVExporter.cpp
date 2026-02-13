@@ -44,3 +44,35 @@ bool CSVExporter::exportModel(const QString &path, const QAbstractItemModel* mod
     }
     return true;
 }
+
+bool CSVExporter::exportModel(const QString &path, const QString &dataQuery)
+{
+    QSqlQuery query(db);
+    if (!query.exec(queryStr)) {
+        qWarning() << "[AcademyScopeModel] Query failed:" << query.lastError().text();
+        return;
+    }
+
+    beginResetModel();
+
+    if (modelData.isEmpty())
+        modelData.resize(dataWindow.tableRowCount);
+
+    int rowIndex = startRow;
+    while (query.next() && rowIndex <= endRow) {
+        QVector<QVariant> row;
+        row.reserve(dataWindow.columnCount);
+        for (int i = 0; i < dataWindow.columnCount; ++i)
+            row.append(query.value(i).isNull() ? QVariant("—") : query.value(i));
+        modelData[rowIndex] = row;
+        ++rowIndex;
+    }
+
+    // Geri kalan satırları boşalt
+    for (int i = 0; i < startRow; ++i)
+        modelData[i].clear();
+    for (int i = endRow + 1; i < modelData.size(); ++i)
+        modelData[i].clear();
+
+    endResetModel();
+}
